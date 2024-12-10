@@ -7,7 +7,8 @@ var logger = require('./logger'); // Import the custom logger
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/api'); 
+var apiRouter = require('./routes/api');
+var scanResultRouter = require('./routes/scanResult'); // Import the scan result router
 
 var app = express();
 
@@ -15,7 +16,6 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-//app.use(logger('dev'));
 // Configure morgan to use a custom format for HTTP log entries
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms', {
   stream: {
@@ -34,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/api', apiRouter); // Use the router for API routes
+app.use('/scan-result', scanResultRouter); // Use the scan result router
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

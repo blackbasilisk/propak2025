@@ -28,25 +28,11 @@ block content
     function onScanSuccess(decodedText, decodedResult) {
       // Handle the scanned code
       console.log(`Code matched = ${decodedText}`, decodedResult);
-      fetch('http://localhost:3000/api/v1/GetContactInfo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ qrCode: decodedText }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Customer Info:', data);
-        // Display customer info on the page
-        document.getElementById('customer-info').innerText = JSON.stringify(data, null, 2);
-        // Close the modal
-        document.getElementById('qrModal').style.display = 'none';
-        document.querySelector('.content').classList.remove('modal-open');
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+      // Close the modal
+      document.getElementById('qrModal').style.display = 'none';
+      document.querySelector('.content').classList.remove('modal-open');
+      // Redirect to scan-result page with the scanned data
+      window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
     }
 
     function onScanFailure(error) {
