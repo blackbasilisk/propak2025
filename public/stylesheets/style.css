@@ -41,7 +41,6 @@ button {
   border: 2px solid #ccc;
 }
 
-
 body.modal-open {
   filter: blur(5px);
   pointer-events: none;
