@@ -1,0 +1,78 @@
+extends layout
+
+block content
+  h1= title
+  p Welcome to #{title}
+  // Checkboxes
+  label
+    input(type="checkbox" name="option1")
+    | Option 1
+  label
+    input(type="checkbox" name="option2")
+    | Option 2
+  label
+    input(type="checkbox" name="option3")
+    | Option 3
+  // Scan button
+  button#scanButton Scan
+  // Modal popup for QR code scanner
+  div#qrModal.modal(style="display:none;")
+    div.modal-content
+      div#reader(style="width: 300px; height: 300px;")
+      button#closeModal Close
+  pre#customer-info
+
+  script(src='https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.0.9/html5-qrcode.min.js')
+  script.
+    function onScanSuccess(decodedText, decodedResult) {
+      // Handle the scanned code
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      fetch('http://localhost:3000/api/v1/GetContactInfo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ qrCode: decodedText }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Customer Info:', data);
+        // Display customer info on the page
+        document.getElementById('customer-info').innerText = JSON.stringify(data, null, 2);
+        // Close the modal
+        document.getElementById('qrModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+
+    function onScanFailure(error) {
+      // Handle scan failure, usually better to ignore and keep scanning.
+      console.warn(`Code scan error = ${error}`);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const html5QrCode = new Html5Qrcode("reader");
+
+      document.getElementById('scanButton').addEventListener('click', function() {
+        document.getElementById('qrModal').style.display = 'flex';
+        document.body.classList.add('modal-open');
+        html5QrCode.start(
+          { facingMode: "environment" }, // Use rear camera
+          {
+            fps: 10,    // Scans per second
+            qrbox: { width: 250, height: 250 }  // QR code scanning box
+          },
+          onScanSuccess,
+          onScanFailure
+        );
+      });
+
+      document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('qrModal').style.display = 'none';
+        document.body.classList.remove('modal-open');
+        html5QrCode.stop().catch(err => console.error('Error stopping QR code scanner:', err));
+      });
+    });
