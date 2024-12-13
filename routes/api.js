@@ -8,7 +8,7 @@ const { poolPromise, sql } = require('../db');
 
 /* POST scanned result */
 router.post('/save-scan-info', async function(req, res, next) {
-  const { ScannedCode, isHRPrint, isBODPrint, isSCPrint, isEidosPrint } = req.body;
+  const { ScannedCode, isHRPrint, isBODPrint, isSCPrint, isEidosPrint, isLaserPrint, isDSPrint, isColorJetPrint } = req.body;
 
   if (!ScannedCode) {
     return res.status(400).json({ success: false, message: 'QR code is required' });
@@ -21,7 +21,10 @@ router.post('/save-scan-info', async function(req, res, next) {
       isHRPrint: isHRPrint ? 1 : 0,
       isBODPrint: isBODPrint ? 1 : 0,
       isSCPrint: isSCPrint ? 1 : 0,
-      isEidosPrint: isEidosPrint ? 1 : 0
+      isEidosPrint: isEidosPrint ? 1 : 0,
+      isLaserPrint : isLaserPrint ? 1 : 0,
+      isDSPrint: isDSPrint ? 1 : 0,
+      isColorJetPrint : isColorJetPrint ? 1 : 0,
     };
 
 
