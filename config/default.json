@@ -8,5 +8,25 @@
       "encrypt": false,
       "enableArithAbort": true
     }
+  },
+    "labelNames": {
+      "HRLabelName": "HRLabel",
+      "GKLabelName": "GKLabel",
+      "UPLabelName": "UPLabel",
+      "SCLabelName": "SCLabel",
+      "EidosLanelName": "EidosLabel",
+      "LaserLabelName": "LaserLabel",
+      "DSLabelName": "DSLabel",
+      "ColorJetLabelName": "ColorJetLabel"
+  },
+  "printerNames": {
+    "HRPrinterName": "HRPrinter",
+    "GKPrinterName": "GKPrinter",
+    "UPPrinterName": "UPPrinter",
+    "SCPrinterName": "SCPrinter",
+    "EidosPrinterName": "EidosPrinter",
+    "LaserPrinterName": "LaserPrinter",
+    "DSPrinterName": "DSPrinter",
+    "ColorJetPrinterName": "ColorJetPrinter"
+    }
   }
-}
