@@ -1,19 +1,31 @@
 var express = require('express');
 var router = express.Router();
+const { getPersonData } = require('../controllers/personController'); // Import the controller function
+const logger = require('../logger');
 
 /* GET scan result page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
   const qrCode = req.query.qrCode;
-  // Fetch customer info based on the QR code
-  // Simulate fetching customer info
-  const customerInfo = {
-    firstName: 'John',
-    lastName: 'Doe',
-    phoneNumber: '123-456-7890',
-    email: 'john.doe@example.com',
-    companyName: 'Example Corp'
-  };
-  res.render('scan-result', { title: 'Scan Result', customerInfo });
+  
+  logger.info('QR code:', qrCode);
+
+  if (!qrCode) {
+    return res.status(400).send('QR code is required');
+  }
+
+  try {
+    const customerInfo = await getPersonData(qrCode);
+    
+    console.log('Customer info:', customerInfo);
+    res.render('scan-result', { title: 'Scan Result', customerInfo });
+
+    //TODO: send data to automation http server
+
+
+  } catch (err) {
+    console.error('Error fetching customer info:', err);
+    res.status(500).send('Error fetching customer info');
+  }
 });
 
 module.exports = router;

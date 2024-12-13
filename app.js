@@ -4,10 +4,13 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
 var logger = require('./logger'); // Import the custom logger
+var fs = require('fs');
+var https = require('https');
+var config = require('config'); // Import the config module
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var apiRouter = require('./routes/api');
+var apiRouter = require('./routes/api'); // Import the api router
 var scanResultRouter = require('./routes/scanResult'); // Import the scan result router
 
 var app = express();

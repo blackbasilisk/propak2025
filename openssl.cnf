@@ -1,0 +1,11 @@
+[req]
+distinguished_name = req_distinguished_name
+prompt = no
+
+[req_distinguished_name]
+CN = REASA
+OU = Development
+O = REASA
+L = South Africa
+ST = Eastern Cape
+C = ZA

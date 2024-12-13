@@ -1,0 +1,12 @@
+{
+  "dbConfig": {
+    "user": "sa",
+    "password": "12345",
+    "server": "127.0.0.1",
+    "database": "propak2025",
+    "options": {
+      "encrypt": false,
+      "enableArithAbort": true
+    }
+  }
+}

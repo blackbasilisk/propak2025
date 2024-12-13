@@ -1,0 +1,8 @@
+{
+  GUID: '142B891E-7AA1-4A11-8C80-9DBA5952D8C9',
+  FirstName: 'John',
+  LastName: 'Doe',
+  Email: 'john@doe.com',
+  Company: 'JohnDoe Inc.',
+  Phone: '+27845480077'
+}

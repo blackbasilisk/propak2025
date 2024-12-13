@@ -1,0 +1,65 @@
+extends layout
+
+block content
+  div.content
+    h1= title
+    p Welcome to #{title}
+    // Checkboxes
+    label
+      input(type="checkbox" name="option1")
+      | Option 1
+    label
+      input(type="checkbox" name="option2")
+      | Option 2
+    label
+      input(type="checkbox" name="option3")
+      | Option 3
+    // Scan button
+    button#scanButton Scan
+    pre#customer-info
+  // Modal popup for QR code scanner
+  div#qrModal.modal(style="display:none;")
+    div.modal-content
+      div#reader(style="width: 300px; height: 300px;")
+      button#closeModal Close
+
+  script(src='https://unpkg.com/html5-qrcode')
+  script.
+    function onScanSuccess(decodedText, decodedResult) {
+      // Handle the scanned code
+      console.log(`Code matched = ${decodedText}`, decodedResult);
+      // Close the modal
+      document.getElementById('qrModal').style.display = 'none';
+      document.querySelector('.content').classList.remove('modal-open');
+      // Redirect to scan-result page with the scanned data
+      window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
+    }
+
+    function onScanFailure(error) {
+      // Handle scan failure, usually better to ignore and keep scanning.
+      console.warn(`Code scan error = ${error}`);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const html5QrCode = new Html5Qrcode("reader");
+
+      document.getElementById('scanButton').addEventListener('click', function() {
+        document.getElementById('qrModal').style.display = 'flex';
+        document.querySelector('.content').classList.add('modal-open');
+        html5QrCode.start(
+          { facingMode: "environment" }, // Use rear camera
+          {
+            fps: 10,    // Scans per second
+            qrbox: { width: 250, height: 250 }  // QR code scanning box
+          },
+          onScanSuccess,
+          onScanFailure
+        );
+      });
+
+      document.getElementById('closeModal').addEventListener('click', function() {
+        document.getElementById('qrModal').style.display = 'none';
+        document.querySelector('.content').classList.remove('modal-open');
+        html5QrCode.stop().catch(err => console.error('Error stopping QR code scanner:', err));
+      });
+    });

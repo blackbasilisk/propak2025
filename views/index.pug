@@ -6,43 +6,114 @@ block content
     p Welcome to #{title}
     // Checkboxes
     label
-      input(type="checkbox" name="option1")
-      | Option 1
+      input(type="checkbox" name="isBODPrint" id="isBODPrint")
+      | GK and UP Printers (Corrugate marking machine)
     label
-      input(type="checkbox" name="option2")
-      | Option 2
+      input(type="checkbox" name="isHRPrint" id="isHRPrint")
+      | HR
     label
-      input(type="checkbox" name="option3")
-      | Option 3
+      input(type="checkbox" name="isSCPrint" id="isSCPrint")
+      | SC 2.0
+    label
+      input(type="checkbox" name="isEidosPrint" id="isEidosPrint")
+      | Eidos
+    label
+      input(type="checkbox" name="isLaserPrint" id="isLaserPrint")
+      | Laser
+    label
+      input(type="checkbox" name="isDSPrint" id="isDSPrint")
+      | DS
+    label
+      input(type="checkbox" name="isColorJetPrint" id="isColorJetPrint")
+      | ColorJet 2      
+
     // Scan button
     button#scanButton Scan
     pre#customer-info
   // Modal popup for QR code scanner
   div#qrModal.modal(style="display:none;")
     div.modal-content
-      div#reader(style="width: 300px; height: 300px;")
+      div#reader(style="width: 100%; height: 300px;")
       button#closeModal Close
 
   script(src='https://unpkg.com/html5-qrcode')
   script.
+    const html5QrCode = new Html5Qrcode("reader");
+
+    let errorShown = false;
+    let isProcessing = false;
+
+    function logErrorToServer(message) {
+      fetch('/api/log-error', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      }).catch(err => {
+        console.error('Error logging to server:', err);
+      });
+    }
+
     function onScanSuccess(decodedText, decodedResult) {
       // Handle the scanned code
-      console.log(`Code matched = ${decodedText}`, decodedResult);
-      // Close the modal
-      document.getElementById('qrModal').style.display = 'none';
-      document.querySelector('.content').classList.remove('modal-open');
-      // Redirect to scan-result page with the scanned data
-      window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
+      console.log(`Code matched = ${decodedText}, ${JSON.stringify(decodedResult)}`);
+      
+       // Close the modal
+        document.getElementById('qrModal').style.display = 'none';
+        document.querySelector('.content').classList.remove('modal-open');
+        // Get checkbox values
+        const isHRPrint = document.getElementById('isHRPrint').checked;
+        const isBODPrint = document.getElementById('isBODPrint').checked;
+        const isSCPrint = document.getElementById('isSCPrint').checked;
+        const isEidosPrint = document.getElementById('isEidosPrint').checked;
+        // Save the scanned result and checkbox values to the database
+        fetch('/api/save-scan-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ ScannedCode: decodedText, isHRPrint, isBODPrint, isSCPrint, isEidosPrint }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            console.log('QR code and checkbox values saved successfully');
+            // Redirect to scan-result page with the scanned data
+            window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
+          } else {
+              logErrorToServer(`Error saving scan result: ${data.message}`);
+              console.log(`Error saving scan result: ${data.message}`);
+              alert('Error saving scan result: ' + data.message);
+              
+              // Stop the QR code scanner
+              html5QrCode.stop();
+
+              // Redirect to home page
+              window.location.href = '/';           
+          }
+        })
+        .catch(error => {        
+            console.log(`Error saving QR code and checkbox values: ${error.message}`);
+            logErrorToServer(error.Message);
+            alert('Error saving QR code and checkbox values: ' + error.message);
+             // Stop the QR code scanner
+            html5QrCode.stop();
+
+            // Redirect to home page
+            window.location.href = '/';
+        
+        });      
     }
 
     function onScanFailure(error) {
       // Handle scan failure, usually better to ignore and keep scanning.
-      console.warn(`Code scan error = ${error}`);
+      //console.warn(`Code scan error = ${error}`);
+      //alert('Unable to detect QR code. Please try again.');
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-      const html5QrCode = new Html5Qrcode("reader");
-
+     
       document.getElementById('scanButton').addEventListener('click', function() {
         document.getElementById('qrModal').style.display = 'flex';
         document.querySelector('.content').classList.add('modal-open');
@@ -54,12 +125,15 @@ block content
           },
           onScanSuccess,
           onScanFailure
-        );
+        ).catch(err => {
+          console.log(`Error starting QR code scanner: ${err}`);
+          alert('Unable to access camera. Please ensure it is connected and permissions are granted.');
+        });
       });
 
       document.getElementById('closeModal').addEventListener('click', function() {
         document.getElementById('qrModal').style.display = 'none';
         document.querySelector('.content').classList.remove('modal-open');
-        html5QrCode.stop().catch(err => console.error('Error stopping QR code scanner:', err));
+        html5QrCode.stop().catch(err => logErrorToServer(`Error stopping QR code scanner: ${err}`));
       });
     });
