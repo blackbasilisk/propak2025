@@ -15,7 +15,6 @@ router.post('/save-scan-info', async function(req, res, next) {
   }
 
   try {
-
      // Create an object containing the scanned data
      const scanInfo = {
       ScannedCode,
@@ -38,6 +37,13 @@ router.post('/save-scan-info', async function(req, res, next) {
 router.post('/log-error', function(req, res, next) {
   const { message } = req.body;
   logger.error(message);
+  res.status(200).json({ success: true });
+});
+
+/* POST log info */
+router.post('/log-info', function(req, res, next) {
+  const { message } = req.body;
+  logger.info(message);
   res.status(200).json({ success: true });
 });
 
