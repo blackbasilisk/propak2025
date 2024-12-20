@@ -15,8 +15,8 @@ async function getPersonData(qrCode) {
     if (result.recordset.length === 0) {
       throw new Error('Person not found');
     }
-
-    return result.recordset[0];
+    const customerInfo = result.recordset[0];
+    return { ...customerInfo };
   } catch (err) {
     logger.error('Error fetching person data:', err);
     throw err;

@@ -5,25 +5,25 @@ block content
     h1= title 
     // Checkboxes
     label
-      input(type="checkbox" name="isBODPrint" id="isBODPrint")
+      input(type="checkbox" name="isPrintBOD" id="isPrintBOD")
       | GK + UP (Corrugate Marking)
     label
-      input(type="checkbox" name="isHRPrint" id="isHRPrint")
+      input(type="checkbox" name="isPrintHR" id="isPrintHR")
       | HR
     label
-      input(type="checkbox" name="isSCPrint" id="isSCPrint")
+      input(type="checkbox" name="isPrintSC" id="isPrintSC")
       | SC 2.0
     label
-      input(type="checkbox" name="isEidosPrint" id="isEidosPrint")
+      input(type="checkbox" name="isPrintEidos" id="isPrintEidos")
       | Eidos
     label
-      input(type="checkbox" name="isLaserPrint" id="isLaserPrint")
+      input(type="checkbox" name="isPrintCL" id="isPrintCL")
       | Laser
     label
-      input(type="checkbox" name="isDSPrint" id="isDSPrint")
+      input(type="checkbox" name="isPrintDS" id="isPrintDS")
       | DS
     label
-      input(type="checkbox" name="isColorJetPrint" id="isColorJetPrint")
+      input(type="checkbox" name="isPrintColorJet" id="isPrintColorJet")
       | ColorJet 2      
 
     // Scan button
@@ -73,34 +73,66 @@ block content
 
       // Handle the scanned code
       logInfoToServer(`Code matched = ${decodedText}, ${JSON.stringify(decodedResult)}`);
-      
+            
       // Stop the QR code scanner
       html5QrCode.stop().then(() => {
+        
         // Close the modal
         document.getElementById('qrModal').style.display = 'none';
         document.querySelector('.content').classList.remove('modal-open');
+
         // Get checkbox values
-        const isHRPrint = document.getElementById('isHRPrint').checked;
-        const isBODPrint = document.getElementById('isBODPrint').checked;
-        const isSCPrint = document.getElementById('isSCPrint').checked;
-        const isEidosPrint = document.getElementById('isEidosPrint').checked;
-        const isLaserPrint = document.getElementById('isLaserPrint').checked;
-        const isDSPrint = document.getElementById('isDSPrint').checked;
-        const isColorJetPrint = document.getElementById('isColorJetPrint').checked;        
+        const isPrintHR = document.getElementById('isPrintHR').checked;
+        const isPrintBOD = document.getElementById('isPrintBOD').checked;
+        const isPrintSC = document.getElementById('isPrintSC').checked;
+        const isPrintEidos = document.getElementById('isPrintEidos').checked;
+        const isPrintCL = document.getElementById('isPrintCL').checked;
+        const isPrintDS = document.getElementById('isPrintDS').checked;
+        const isPrintColorJet = document.getElementById('isPrintColorJet').checked;    
+        
+        //- const queryParams = new URLSearchParams ({
+        //-       qrCode: decodedText,
+        //-       isHRPrint,
+        //-       isBODPrint,
+        //-       isSCPrint,
+        //-       isEidosPrint,
+        //-       isLaserPrint,
+        //-       isDSPrint,
+        //-       isColorJetPrint
+        //-     }).toString();
+
+        //-  window.location.href = `/save-scan-info?${queryParams}`;
+
         // Save the scanned result and checkbox values to the database
         fetch('/api/save-scan-info', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ScannedCode: decodedText, isHRPrint, isBODPrint, isSCPrint, isEidosPrint, isLaserPrint, isDSPrint, isColorJetPrint }),
+          body: JSON.stringify({ ScannedCode: decodedText, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet  }),
         })
         .then(response => response.json())
         .then(data => {
           if (data.success) {
+
             logInfoToServer('QR code and checkbox values saved successfully');
+            // Redirect to scan-result page with the scanned data and checkbox values
+            const queryParams = new URLSearchParams ({
+              rowId: data.rowId,
+              //- qrCode: decodedText,
+              //- isHRPrint,
+              //- isBODPrint,
+              //- isSCPrint,
+              //- isEidosPrint,
+              //- isLaserPrint,
+              //- isDSPrint,
+              //- isColorJetPrint
+            }).toString();
+            
+            window.location.href = `/scan-result?${queryParams}`;
+            //window.location.href = `/scan-result?${queryParams}`;
             // Redirect to scan-result page with the scanned data
-            window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
+            //window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
           } else {
             handleError(`Error saving scan result: ${data.message}`);
           }

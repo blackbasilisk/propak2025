@@ -10,23 +10,27 @@
     }
   },
     "labelNames": {
-      "HRLabelName": "HRLabel",
-      "GKLabelName": "GKLabel",
-      "UPLabelName": "UPLabel",
-      "SCLabelName": "SCLabel",
-      "EidosLanelName": "EidosLabel",
-      "LaserLabelName": "LaserLabel",
-      "DSLabelName": "DSLabel",
-      "ColorJetLabelName": "ColorJetLabel"
+    "LabelNameHR": "LabelHR",
+    "LabelNameGK": "LabelGK",
+    "LabelNameUP": "LabelUP",
+    "LabelNameSC": "LabeLSC",
+    "LabelNameEidos": "LabelEidos",
+    "LabelNameCL": "LabelCL",
+    "LabelNameDS": "LabelDS" , 
+    "LabelNameColorJet": "LabelColorJet"
   },
   "printerNames": {
-    "HRPrinterName": "HRPrinter",
-    "GKPrinterName": "GKPrinter",
-    "UPPrinterName": "UPPrinter",
-    "SCPrinterName": "SCPrinter",
-    "EidosPrinterName": "EidosPrinter",
-    "LaserPrinterName": "LaserPrinter",
-    "DSPrinterName": "DSPrinter",
-    "ColorJetPrinterName": "ColorJetPrinter"
-    }
+    "PrinterNameHR": "REA JET HR 2K",
+    "PrinterNameGK": "-",
+    "PrinterNameUP": "REA JET UP",
+    "PrinterNameSC": "REA JET SC 2.0",
+    "PrinterNameEidos": "-",
+    "PrinterNameCL": "REA JET CL",
+    "PrinterNameDS": "-",
+    "PrinterNameColorJet": "REA LABEL ColorJet 2"
+    },    
+    "automationConfig": {
+      "serverAddress": "127.0.0.1",
+      "serverPort": "56425"
+    }    
   }

@@ -9,9 +9,8 @@ var https = require('https');
 var config = require('config'); // Import the config module
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api'); // Import the api router
-var scanResultRouter = require('./routes/scanResult'); // Import the scan result router
+var scanResultRouter = require('./routes/scan-result'); // Import the scan result router
 
 var app = express();
 
@@ -35,7 +34,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 app.use('/api', apiRouter); // Use the router for API routes
 app.use('/scan-result', scanResultRouter); // Use the scan result router
 

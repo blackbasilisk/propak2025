@@ -2,7 +2,7 @@ const { poolPromise, sql } = require('../db');
 var logger = require('../logger'); // Import the custom logger
 
 async function saveScanResult(scanInfo) {    
-  const { ScannedCode, isHRPrint, isBODPrint, isSCPrint, isEidosPrint, isLaserPrint, isDSPrint, isColorJetPrint } = scanInfo;
+  const { ScannedCode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = scanInfo;
 
   if (!ScannedCode) {
     throw new Error('QR code is required');
@@ -11,20 +11,23 @@ async function saveScanResult(scanInfo) {
 
   try {
     //save scanned code to DB
-
+    var query = 'INSERT INTO ScanResults (ScannedCode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet) VALUES (@ScannedCode, @isPrintHR, @isPrintBOD, @isPrintSC, @isPrintEidos, @isPrintCL, @isPrintDS, @isPrintColorJet)';
+    query += ' SELECT SCOPE_IDENTITY() AS rowId';
     const pool = await poolPromise;
     const result = await pool.request()
       .input('ScannedCode', sql.NVarChar, ScannedCode)
-      .input('isHRPrint', sql.Bit, isHRPrint ? 1 : 0)
-      .input('isBODPrint', sql.Bit, isBODPrint ? 1 : 0)
-      .input('isSCPrint', sql.Bit, isSCPrint ? 1 : 0)
-      .input('isEidosPrint', sql.Bit, isEidosPrint ? 1 : 0)
-      .input('isLaserPrint', sql.Bit, isLaserPrint ? 1 : 0)
-      .input('isDSPrint', sql.Bit, isDSPrint ? 1 : 0)
-      .input('isColorJetPrint', sql.Bit, isColorJetPrint ? 1 : 0)      
-      .query('INSERT INTO ScanResults (ScannedCode, IsHRPrint, IsBODPrint, IsSCPrint, IsEidosPrint, isLaserPrint, isDSPrint, isColorJetPrint) VALUES (@ScannedCode, @isHRPrint, @isBODPrint, @isSCPrint, @isEidosPrint, @isLaserPrint, @isDSPrint, @isColorJetPrint)');
+      .input('isPrintHR', sql.Bit, isPrintHR ? 1 : 0)
+      .input('isPrintBOD', sql.Bit, isPrintBOD ? 1 : 0)
+      .input('isPrintSC', sql.Bit, isPrintSC ? 1 : 0)
+      .input('isPrintEidos', sql.Bit, isPrintEidos ? 1 : 0)
+      .input('isPrintCL', sql.Bit, isPrintCL ? 1 : 0)
+      .input('isPrintDS', sql.Bit, isPrintDS ? 1 : 0)
+      .input('isPrintColorJet', sql.Bit, isPrintColorJet ? 1 : 0)      
+      .query(query);
 
-    logger.info('QR code and checkbox selection saved successfully');   
+      logger.info('QR code and checkbox selection saved successfully. RowId: ' + result.recordset[0].rowId);   
+      
+      return result.recordset[0].rowId;
     }    
     catch (err) {
     logger.error('Error saving scan result:', err);
@@ -32,4 +35,37 @@ async function saveScanResult(scanInfo) {
   }
 }
 
-module.exports = { saveScanResult };
+async function getScanInfo(rowId) {
+  if (!rowId) {
+    throw new Error('rowId is required');
+  }
+
+  try {
+    const query = 'SELECT ScannedCode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet FROM ScanResults WHERE Id = @rowId';
+    
+    const pool = await poolPromise;
+    const result = await pool.request()
+      .input('rowId', sql.Int, rowId)
+      .query(query);
+
+    if (result.recordset.length === 0) {
+      throw new Error('Scan info not found using RowId ' + rowId);
+    }
+    
+    const scanInfo = result.recordset[0];
+    
+    // Convert boolean values to strings
+    for (const key in scanInfo) {
+      if (typeof scanInfo[key] === 'boolean') {
+        scanInfo[key] = scanInfo[key].toString();
+      }
+    }
+   
+    return { ...scanInfo };
+  } catch (err) {
+    logger.error('Error fetching scan info:', err);
+    throw err;
+  }
+}
+
+module.exports = { saveScanResult, getScanInfo };
