@@ -4,7 +4,7 @@ prompt = no
 
 [req_distinguished_name]
 CN = REASA
-OU = Development
+OU = 
 O = REASA
 L = South Africa
 ST = Eastern Cape
