@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var forceHttps = require('express-force-https'); // Import the force-https middleware
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var morgan = require('morgan');
@@ -21,7 +22,7 @@ app.set('view engine', 'pug');
 // Configure morgan to use a custom format for HTTP log entries
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms', {
   stream: {
-    write: (message) => logger.info(`HTTP: ${message.trim()}`)
+    write: (message) => logger.info(`${message.trim()}`)
   }
 }));
 
