@@ -1,0 +1,6 @@
+{
+    "watch": ["config", "routes", "views", "public", "bin"],
+    "ext": "js, json",
+    "ignore": ["*.log", "*.txt"],
+    "verbose": true
+}

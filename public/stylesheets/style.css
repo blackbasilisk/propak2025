@@ -16,7 +16,7 @@ body {
 header
 {
   max-width: 300px;
-  width: 500px;
+  width: 900px;
 }
 /* Ensure the header image scales correctly and is centered */
 .header-image {
@@ -30,7 +30,7 @@ header
 
 /* Style the content div */
 .content {
-  max-width: 80%;
+  max-width: 90%;
   width: 100%;
   margin: 0 auto;
   padding: 20px;
@@ -40,6 +40,12 @@ h1 {
   color: #004174;
   text-align: center;
 }
+
+h2{
+  color: #004174;
+  text-align: center;
+}
+
 
 p {
   font-size: 1.2em;
@@ -120,4 +126,59 @@ button:hover {
     width: 100%;
     max-width: 90%;
   }
+}
+
+/* Container for centering the login form */
+.login-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 5px;
+}
+
+/* Styling for the login box */
+.login-box {
+  background-color: #f9f9f9;
+  max-width: 300px;
+  width: 250px;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form group for spacing between form elements */
+.form-group {
+  margin-bottom: 15px;
+}
+
+/* Form control for styling input fields */
+.form-control {
+  width: 80%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Contact info table styles */
+.contact-info-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.contact-info-table th, .contact-info-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.contact-info-table th {
+  background-color: #f2f2f2;
+  text-align: left;
+}
+
+.contact-info-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.contact-info-table tr:hover {
+  background-color: #ddd;
 }

@@ -7,5 +7,12 @@ html
   body
     header
       // Add your header image here
-      img(src='/images/REA_SA.jpg' alt='REA South Africa' class='header-image') 
+      a(href='/')
+        img(src='/images/REA_SA.jpg' alt='REA South Africa' class='header-image')
+      if user
+        p Welcome, #{user.Firstname}!
+        a(href='/logout') Logout
+      else if currentPath !== '/login'
+        a(href='/login') Login
+
     block content

@@ -2,16 +2,18 @@
   "name": "demo-app",
   "version": "0.0.0",
   "private": true,
-  "scripts": {    
-    "start": "nodemon ./bin/www-https"        
+  "scripts": {
+    "start": "nodemon ./bin/www-https",
+    "dev": "node ./bin/www-https"
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "body-parser": "^1.20.3",
     "config": "^3.3.12",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "express": "~4.16.1",
-    "express-force-https": "^1.0.0",
+    "express-session": "^1.18.1",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
     "mssql": "^11.0.1",

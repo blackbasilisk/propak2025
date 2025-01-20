@@ -61,12 +61,16 @@ router.get('/', async function(req, res, next) {
  
      // Write the automationData object to a JSON file
      const filePath = path.join(__dirname, '../automationTriggers', filename);
-     fs.writeFileSync(filePath, JSON.stringify(automationData, null, 2));
+     const automationDataJSON = JSON.stringify(automationData, null, 2);
+     fs.writeFileSync(filePath, automationDataJSON);
      logger.info(`Automation data saved to file: ${filePath}`);
 
-    const automationPostResult = postToAutomationServer(automationURL, automationData);
+    const result = await postToAutomationServer(automationURL, automationData);
+    const isSuccess = result.isSuccess;
+    const message = result.message;
 
-    res.render('scan-result', { title: 'Scan Result', contactInfo, automationPostResult });
+    logger.info(JSON.stringify(result, null, 2));
+    res.render('scan-result', { title: 'Scan Result', contactInfo, isSuccess, message });
 
   } catch (err) {
     console.error('Error processing contact info and saving customer info:', err);

@@ -25,8 +25,8 @@ async function getAutomationParametersFromConfig() {
 
 async function postToAutomationServer(automationUrl, automationData) {  
   try {
-      
-    logger.info('Automation post parameters:', automationData);
+    // const automationDataJSON = JSON.stringify(automationData, null, 2);
+    // logger.info('Automation post parameters: ' + automationDataJSON );
     
     // Perform the POST request with a timeout of 60 seconds
     const response = await axios.post(automationUrl, automationData, {
@@ -36,13 +36,31 @@ async function postToAutomationServer(automationUrl, automationData) {
       timeout: 60000 // 60 seconds
     });
     
-    // Log and return the response
-    logger.info('Response from automation server:', response.data);
-
-    return response.data;
-  } catch (err) {
+    // Assuming a successful response has a status code of 200
+    if (response.status === 200) {
+      // Log and return the response
+      logger.info('Response from automation server:', response.data);
+      return {
+        status: response.status,
+        isSuccess: true,
+        message: response.data
+      };
+    } else {
+      // Log and return the response
+      logger.info('Error: Status ' + response.status + ' returned from server');
+      return {
+        status: response.status,
+        isSuccess: false,
+        message: `Unexpected response status: ${response.status}`
+      };
+    }
+ 
+  } catch (err) {    
     logger.error('Error posting to automation server:', err);
-    throw err;
+    return {      
+      isSuccess: false,
+      message: err.message
+    };    
   }
 }
 

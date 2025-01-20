@@ -3,28 +3,72 @@ extends layout
 block content
   div.content
     h1= title 
-    // Checkboxes
-    label
-      input(type="checkbox" name="isPrintBOD" id="isPrintBOD")
-      | GK + UP (Corrugate Marking)
-    label
-      input(type="checkbox" name="isPrintHR" id="isPrintHR")
-      | HR
-    label
-      input(type="checkbox" name="isPrintSC" id="isPrintSC")
-      | SC 2.0
-    label
-      input(type="checkbox" name="isPrintEidos" id="isPrintEidos")
-      | Eidos
-    label
-      input(type="checkbox" name="isPrintCL" id="isPrintCL")
-      | Laser
-    label
-      input(type="checkbox" name="isPrintDS" id="isPrintDS")
-      | DS
-    label
-      input(type="checkbox" name="isPrintColorJet" id="isPrintColorJet")
-      | ColorJet 2      
+    
+    //- if user && user.IsAdmin    
+    //-   div.option-group
+    //-     label(for="option1") Option 1:
+    //-     input(type="checkbox" id="option1" name="exampleOptions" value="option1")
+    //-   div.option-group
+    //-     label(for="option2") Option 2:
+    //-     input(type="checkbox" id="option2" name="exampleOptions" value="option2")
+    //-   div.option-group
+    //-     label(for="option3") Option 3:
+    //-     input(type="checkbox" id="option3" name="exampleOptions" value="option3")
+    //- else
+    //-   div.option-group
+    //-     label(for="option1") Option 1:
+    //-     input(type="radio" id="option1" name="exampleOptions" value="option1")
+    //-   div.option-group
+    //-     label(for="option2") Option 2:
+    //-     input(type="radio" id="option2" name="exampleOptions" value="option2")
+    //-   div.option-group
+    //-     label(for="option3") Option 3:
+    //-     input(type="radio" id="option3" name="exampleOptions" value="option3")
+    if user && user.IsAdmin   
+      // Checkboxes
+      label
+        input(type="checkbox" name="isPrintBOD" id="isPrintBOD" value="isPrintBOD")
+        | GK + UP (Corrugate Marking)
+      label
+        input(type="checkbox" name="isPrintHR" id="isPrintHR" value="isPrintHR")
+        | HR
+      label
+        input(type="checkbox" name="isPrintSC" id="isPrintSC" value="isPrintSC")
+        | SC 2.0
+      label
+        input(type="checkbox" name="isPrintEidos" id="isPrintEidos" value="isPrintEidos")
+        | Eidos
+      label
+        input(type="checkbox" name="isPrintCL" id="isPrintCL" value="isPrintCL")
+        | Laser
+      label
+        input(type="checkbox" name="isPrintDS" id="isPrintDS" value="isPrintDS")
+        | DS
+      label
+        input(type="checkbox" name="isPrintColorJet" id="isPrintColorJet" value="isPrintColorJet")
+        | ColorJet 2      
+    else 
+      label(for="isPrintBOD") 
+        input(type="radio" name="singlePrintOption" id="isPrintBOD")
+        | GK + UP (Corrugate Marking)
+      label(for="isPrintHR") 
+        input(type="radio" name="singlePrintOption" id="isPrintHR")
+        | HR
+      label(for="isPrintSC") 
+        input(type="radio" name="singlePrintOption" id="isPrintSC")
+        | SC 2.0
+      label(for="isPrintEidos") 
+        input(type="radio" name="singlePrintOption" id="isPrintEidos")
+        | Eidos
+      label(for="isPrintCL") 
+        input(type="radio" name="singlePrintOption" id="isPrintCL")
+        | Laser
+      label(for="isPrintDS") 
+        input(type="radio" name="singlePrintOption" id="isPrintDS")
+        | DS
+      label(for="isPrintColorJet") 
+        input(type="radio" name="singlePrintOption" id="isPrintColorJet")
+        | ColorJet 2      
 
     // Scan button
     button#scanButton Scan
@@ -81,7 +125,7 @@ block content
         document.getElementById('qrModal').style.display = 'none';
         document.querySelector('.content').classList.remove('modal-open');
 
-        // Get checkbox values
+        // Get checkbox values        
         const isPrintHR = document.getElementById('isPrintHR').checked;
         const isPrintBOD = document.getElementById('isPrintBOD').checked;
         const isPrintSC = document.getElementById('isPrintSC').checked;
@@ -89,20 +133,7 @@ block content
         const isPrintCL = document.getElementById('isPrintCL').checked;
         const isPrintDS = document.getElementById('isPrintDS').checked;
         const isPrintColorJet = document.getElementById('isPrintColorJet').checked;    
-        
-        //- const queryParams = new URLSearchParams ({
-        //-       qrCode: decodedText,
-        //-       isHRPrint,
-        //-       isBODPrint,
-        //-       isSCPrint,
-        //-       isEidosPrint,
-        //-       isLaserPrint,
-        //-       isDSPrint,
-        //-       isColorJetPrint
-        //-     }).toString();
-
-        //-  window.location.href = `/save-scan-info?${queryParams}`;
-
+              
         // Save the scanned result and checkbox values to the database
         fetch('/api/save-scan-info', {
           method: 'POST',
@@ -160,24 +191,26 @@ block content
         window.location.href = '/';
       }
     }
-
+   
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('scanButton').addEventListener('click', function() {
         errorShown = false; // Reset the error flag when the scan button is clicked
         isProcessing = false; // Reset the processing flag when the scan button is clicked
         document.getElementById('qrModal').style.display = 'flex';
         document.querySelector('.content').classList.add('modal-open');
-        html5QrCode.start(
+
+        html5QrCode.start(        
           { facingMode: "environment" }, // Use rear camera
           {
             fps: 10,    // Scans per second
-            qrbox: { width: 250, height: 250 }  // QR code scanning box
+            qrbox: { width: 250, height: 250 },
+            rememberLastUsedCamera: true  // QR code scanning box
           },
           onScanSuccess,
           onScanFailure
         ).catch(err => {
           handleError(`Error starting QR code scanner: ${err}`);
-        });
+        });        
       });
 
       document.getElementById('closeModal').addEventListener('click', function() {
