@@ -180,8 +180,8 @@ block content
         const isPrintCL = document.getElementById('isPrintCL').checked;
         const isPrintDS = document.getElementById('isPrintDS').checked;
         const isPrintColorJet = document.getElementById('isPrintColorJet').checked;    
-              
-        const scanInfo = { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet };
+        
+        const scanInfo = { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet, userId: window.user.Id };
         try {
 
           const saveScanInfoResult = await saveScanInfo(scanInfo);
@@ -193,8 +193,7 @@ block content
             // Retrieve contact info from the server or 3rd party service
             var contactInfo = await getContactData(barcode);
 
-            if (contactInfo) {
-                                         
+            if (contactInfo) {                                         
               contactInfo = contactInfo.contactInfo;
               const leadInfo = { firstName: contactInfo.FirstName, lastName: contactInfo.LastName, email: contactInfo.Email, company: contactInfo.Company, phone: contactInfo.Phone, barcode: barcode, userId: window.user.Id, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet };
                logInfoToServer('Saving lead info to the server: ' + JSON.stringify(leadInfo));

@@ -9,7 +9,7 @@ const { poolPromise, sql } = require('../db');
 
 /* POST scanned result */
 router.post('/save-scan-info', async function(req, res, next) {
-  const { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = req.body;
+  const { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet, userId } = req.body;
 
   if (!barcode) {
     return res.status(400).json({ success: false, message: 'Barcode is required' });
@@ -26,6 +26,7 @@ router.post('/save-scan-info', async function(req, res, next) {
       isPrintCL : isPrintCL ? 1 : 0,
       isPrintDS: isPrintDS ? 1 : 0,
       isPrintColorJet : isPrintColorJet ? 1 : 0,
+      userId: userId
     };
 
     const r = await saveScanInfo(scanInfo);

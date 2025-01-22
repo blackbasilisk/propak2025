@@ -2,15 +2,19 @@ const { poolPromise, sql } = require('../db');
 var logger = require('../logger'); // Import the custom logger
 
 async function saveScanInfo(scanInfo) {    
-  const { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = scanInfo;
+  const { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet, userId } = scanInfo;
   logger.info('(scanController.saveScanResult) scanInfo: ' + JSON.stringify(scanInfo)); 
   if (!barcode) {
     throw new Error('Barcode is required');
   }
 
+  if (!userId) {
+    throw new Error('UserId is required');
+  }
+
   try {
     //save scanned code to DB
-    var query = 'INSERT INTO ScanResults (Barcode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet) VALUES (@barcode, @isPrintHR, @isPrintBOD, @isPrintSC, @isPrintEidos, @isPrintCL, @isPrintDS, @isPrintColorJet)';
+    var query = 'INSERT INTO ScanResults (Barcode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet, UserId) VALUES (@barcode, @isPrintHR, @isPrintBOD, @isPrintSC, @isPrintEidos, @isPrintCL, @isPrintDS, @isPrintColorJet, @userId)';
     query += ' SELECT SCOPE_IDENTITY() AS rowId';
     const pool = await poolPromise;
     const result = await pool.request()
@@ -22,6 +26,7 @@ async function saveScanInfo(scanInfo) {
       .input('isPrintCL', sql.Bit, isPrintCL ? 1 : 0)
       .input('isPrintDS', sql.Bit, isPrintDS ? 1 : 0)
       .input('isPrintColorJet', sql.Bit, isPrintColorJet ? 1 : 0)      
+      .input('userId', sql.Int, userId)      
       .query(query);
       
       if (result.recordset.length > 0) {
