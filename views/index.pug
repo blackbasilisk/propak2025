@@ -2,28 +2,7 @@ extends layout
 
 block content
   div.content
-    h1= title 
-    
-    //- if user && user.IsAdmin    
-    //-   div.option-group
-    //-     label(for="option1") Option 1:
-    //-     input(type="checkbox" id="option1" name="exampleOptions" value="option1")
-    //-   div.option-group
-    //-     label(for="option2") Option 2:
-    //-     input(type="checkbox" id="option2" name="exampleOptions" value="option2")
-    //-   div.option-group
-    //-     label(for="option3") Option 3:
-    //-     input(type="checkbox" id="option3" name="exampleOptions" value="option3")
-    //- else
-    //-   div.option-group
-    //-     label(for="option1") Option 1:
-    //-     input(type="radio" id="option1" name="exampleOptions" value="option1")
-    //-   div.option-group
-    //-     label(for="option2") Option 2:
-    //-     input(type="radio" id="option2" name="exampleOptions" value="option2")
-    //-   div.option-group
-    //-     label(for="option3") Option 3:
-    //-     input(type="radio" id="option3" name="exampleOptions" value="option3")
+    h1= title    
     if user && user.IsAdmin   
       // Checkboxes
       label
@@ -73,19 +52,31 @@ block content
     // Scan button
     button#scanButton Scan
     pre#customer-info
+
   // Modal popup for QR code scanner
-  div#qrModal.modal(style="display:none;")
+  div#barcodeScannerModel.modal(style="display:none;")
     div.modal-content
       div#reader-container
         div#reader
-      button#closeModal Close
+      button#closeModal Close  
 
+  div#loading-spinner(style="display:none;")
+    div.spinner
+      img(src="/images/loader.gif", alt="Loading...")
+    
   script(src='https://unpkg.com/html5-qrcode')
   script.
-    const html5QrCode = new Html5Qrcode("reader");
+    window.user = !{JSON.stringify(user)};
 
+    const html5QrCode = new Html5Qrcode("reader");
+    
     let errorShown = false;
     let isProcessing = false;
+
+    function displayMessageToUser(isError){
+      //hide the qr code scanner
+      document.getElementById('barcodeScannerModel').style.display = 'none';
+    }
 
     function logErrorToServer(message) {
       fetch('/api/log-error', {
@@ -111,7 +102,60 @@ block content
       });
     }
 
-    function onScanSuccess(decodedText, decodedResult) {
+    async function getContactData(barcode) {
+      try {
+        const response = await fetch(`/api/get-contact-info?barcode=${encodeURIComponent(barcode)}`);
+        const result = await response.json();
+        return result;
+
+      } catch (error) {
+        handleError(`Error retrieving contact information: ${error.message}`);
+        return null;
+      }
+    }
+
+    async function saveScanInfo(scanInfo) {
+      try {
+        logInfoToServer('index.pug.saveScanInfo: Pre save:' + JSON.stringify(scanInfo));
+        const response = await fetch('/api/save-scan-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(scanInfo),
+        });
+
+        const jsonResponse = await response.json();
+      
+        logInfoToServer('index.pug.saveScanInfo: Scan API response:' + JSON.stringify(jsonResponse));        
+        return jsonResponse;
+      } catch (error) {
+        handleError(`index.pug.saveScanInfo: Error saving scan information: ${error.message}`);
+        return null;
+      }
+    }
+
+    
+    async function saveLeadInfo(leadInfo) {
+      try {        
+          const response = await fetch('/api/save-lead-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(leadInfo),
+        });
+        const jsonResponse = await response.json();
+        logInfoToServer('Save Lead API response:' + JSON.stringify(jsonResponse))
+
+        return jsonResponse;
+      } catch (error) {
+        handleError(`Error saving lead information: ${error.message}`);
+        return null;
+      }
+    }
+
+    async function onScanSuccess(decodedText, decodedResult) {
       if (isProcessing) return; // Prevent multiple API calls
       isProcessing = true;
 
@@ -119,13 +163,16 @@ block content
       logInfoToServer(`Code matched = ${decodedText}, ${JSON.stringify(decodedResult)}`);
             
       // Stop the QR code scanner
-      html5QrCode.stop().then(() => {
-        
+      try {
+        await html5QrCode.stop();
+        document.getElementById('loading-spinner').style.display = 'flex';
+        document.getElementById('scanButton').disabled = true;
         // Close the modal
-        document.getElementById('qrModal').style.display = 'none';
+        document.getElementById('barcodeScannerModel').style.display = 'none';
         document.querySelector('.content').classList.remove('modal-open');
 
-        // Get checkbox values        
+        // Get checkbox values     
+        const barcode = decodedText;   
         const isPrintHR = document.getElementById('isPrintHR').checked;
         const isPrintBOD = document.getElementById('isPrintBOD').checked;
         const isPrintSC = document.getElementById('isPrintSC').checked;
@@ -134,87 +181,107 @@ block content
         const isPrintDS = document.getElementById('isPrintDS').checked;
         const isPrintColorJet = document.getElementById('isPrintColorJet').checked;    
               
-        // Save the scanned result and checkbox values to the database
-        fetch('/api/save-scan-info', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ ScannedCode: decodedText, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet  }),
-        })
-        .then(response => response.json())
-        .then(data => {
-          if (data.success) {
+        const scanInfo = { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet };
+        try {
 
-            logInfoToServer('QR code and checkbox values saved successfully');
-            // Redirect to scan-result page with the scanned data and checkbox values
-            const queryParams = new URLSearchParams ({
-              rowId: data.rowId,
-              //- qrCode: decodedText,
-              //- isHRPrint,
-              //- isBODPrint,
-              //- isSCPrint,
-              //- isEidosPrint,
-              //- isLaserPrint,
-              //- isDSPrint,
-              //- isColorJetPrint
-            }).toString();
-            
-            window.location.href = `/scan-result?${queryParams}`;
-            //window.location.href = `/scan-result?${queryParams}`;
-            // Redirect to scan-result page with the scanned data
-            //window.location.href = `/scan-result?qrCode=${encodeURIComponent(decodedText)}`;
+          const saveScanInfoResult = await saveScanInfo(scanInfo);
+
+          logInfoToServer('index.pug.onScanSuccess: Save Scan API response:' + JSON.stringify(saveScanInfoResult))
+          if (saveScanInfoResult.success) {
+            logInfoToServer('Code and selection values saved successfully. Code: ' + barcode);
+
+            // Retrieve contact info from the server or 3rd party service
+            var contactInfo = await getContactData(barcode);
+
+            if (contactInfo) {
+                                         
+              contactInfo = contactInfo.contactInfo;
+              const leadInfo = { firstName: contactInfo.FirstName, lastName: contactInfo.LastName, email: contactInfo.Email, company: contactInfo.Company, phone: contactInfo.Phone, barcode: barcode, userId: window.user.Id, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet };
+               logInfoToServer('Saving lead info to the server: ' + JSON.stringify(leadInfo));
+              // Save lead info to the server incl. technology interest  
+              const saveLeadResult = await saveLeadInfo(leadInfo);   
+
+              if (saveLeadResult || saveLeadResult.success) {
+                // When user info retrieved and lead saved, hide loading spinner
+                document.getElementById('loading-spinner').style.display = 'none';
+                document.getElementById('scanButton').disabled = false;
+                const leadInfo = saveLeadResult.lead;
+                                                                                                     
+                // Create a form
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/scan-result';
+
+                // Add the object data as hidden inputs
+                for (const key in leadInfo) {
+                  if (leadInfo.hasOwnProperty(key)) {
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = key;
+                    input.value = leadInfo[key];
+                    form.appendChild(input);
+                  }
+                }
+
+                // Append the form to the body and submit it
+                document.body.appendChild(form);
+                form.submit();
+              } else {
+                handleError('Error saving lead information. ' + saveLeadResult.message);
+              }
+            } else {
+              handleError('Error retrieving contact information. ' + saveLeadResult.message);
+            }
           } else {
-            handleError(`Error saving scan result: ${data.message}`);
+            handleError(`1: Error saving scan info: ${saveScanInfoResult.message}`);
           }
-        })
-        .catch(error => {          
-          handleError(`Error saving QR code and checkbox values: ${error.message}`);
-        });
-      }).catch(err => {
-        handleError(`Error stopping QR code scanner: ${err}`);
-      });
+        } catch (error) {
+          handleError(`2: Error saving scan info: ${error.message}`);
+        } finally {
+          isProcessing = false;
+        }
+      } catch (err) {
+        handleError(`Error stopping barcode scanner: ${err}`);
+        isProcessing = false;
+      }
     }
 
     function onScanFailure(error) {
       // Handle scan failure, usually better to ignore and keep scanning.
       console.warn(`Code scan error = ${error}`);
-      //alert('Unable to detect QR code. Please try again.');
     }
 
+    // Define the handleError function
     function handleError(message) {
-      if (!errorShown) {
-        logErrorToServer(message);
-        alert(message);
-        errorShown = true;
-        // Redirect to home page
-        window.location.href = '/';
-      }
+      console.error(message);
+      // Display the error message to the user (you can customize this as needed)
+      alert(message);
     }
-   
+
+    // Add event listener to the scan button
     document.addEventListener('DOMContentLoaded', function() {
       document.getElementById('scanButton').addEventListener('click', function() {
         errorShown = false; // Reset the error flag when the scan button is clicked
         isProcessing = false; // Reset the processing flag when the scan button is clicked
-        document.getElementById('qrModal').style.display = 'flex';
+        document.getElementById('barcodeScannerModel').style.display = 'flex';
         document.querySelector('.content').classList.add('modal-open');
 
-        html5QrCode.start(        
+        html5QrCode.start(
           { facingMode: "environment" }, // Use rear camera
           {
             fps: 10,    // Scans per second
             qrbox: { width: 250, height: 250 },
-            rememberLastUsedCamera: true  // QR code scanning box
+            rememberLastUsedCamera: false  // Disable storing the last used camera
           },
           onScanSuccess,
           onScanFailure
         ).catch(err => {
           handleError(`Error starting QR code scanner: ${err}`);
-        });        
+        });
       });
 
       document.getElementById('closeModal').addEventListener('click', function() {
-        document.getElementById('qrModal').style.display = 'none';
+        document.getElementById('barcodeScannerModel').style.display = 'none';
         document.querySelector('.content').classList.remove('modal-open');
         html5QrCode.stop().catch(err => logErrorToServer(`Error stopping QR code scanner: ${err}`));
       });

@@ -5,77 +5,72 @@ const config = require('config');
 const fs = require('fs');
 const path = require('path');
 
-const { getScanInfo } = require('../controllers/scanController'); 
-const { getContactData } = require('../controllers/contactController'); 
 const { getAutomationParametersFromConfig, postToAutomationServer } = require('../controllers/integrationController'); 
 
 /* GET scan result page. */
-router.get('/', async function(req, res, next) {        
+router.get('/', async function(req, res, next) {            
+    const firstName = req.query.firstName;
+    const lastName = req.query.lastName;
+    const email = req.query.email;
+    const company = req.query.company;
+    const phone = req.query.phone;
+    const isPrintHR = req.query.isPrintHR === 'false';
+    const isPrintBOD = req.query.isPrintBOD === 'false';
+    const isPrintSC = req.query.isPrintSC === 'false';
+    const isPrintEidos = req.query.isPrintEidos === 'false';
+    const isPrintDS = req.query.isPrintDS === 'false';
+    const isPrintCL = req.query.isPrintLaser === 'false';
+    const isPrintColorJet = req.query.isPrintColorJet === 'false';
+                
+    //const isPrintRequired = isPrintHR || isPrintBOD || isPrintSC || isPrintEidos || isPrintDS || isPrintCL || isPrintColorJet;
 
-    const rowId = req.query.rowId;
-    // // Extract specific query parameters
-    // const qrCode = req.query.qrCode;
-    // const isPrintHR = req.query.isHRPrint === 'true';
-    // const isPrintBOD = req.query.isBODPrint === 'true';
-    // const isPrintSC = req.query.isSCPrint === 'true';
-    // const isPrintEidos = req.query.isEidosPrint === 'true';
-    // const isPrintCL = req.query.isLaserPrint === 'true';
-    // const isPrintDS = req.query.isDSPrint === 'true';
-    // const isPrintColorJet = req.query.isColorJetPrint === 'true';  
-    // const queryParams = { qrCode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet };
-
-    logger.info('Row Id:' + rowId);
-
-  if (!rowId) {
-    return res.status(400).send('RowId is required');
+  if (!firstName || !lastName || !phone) {
+    return res.status(400).send('First name, last name and phone are required.');
   }
+  const leadInfo = { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
 
-  try {
-    //Get scan info from DB using the rowId
-    const scanInfo = await getScanInfo(rowId);
+  logger.info(JSON.stringify(leadInfo, null, 2));
+  res.render('scan-result', { title: 'Result', leadInfo });
+
+  //try {
+    // //Get scan info from DB using the rowId
+    // const scanInfo = await getScanInfo(rowId);
     
-    const scannedCode = scanInfo.ScannedCode;
-    if(!scannedCode) {
-      return res.status(400).send('ScannedCode is required'); 
-    }
+    // const scannedCode = scanInfo.ScannedCode;
+    // if(!scannedCode) {
+    //   return res.status(400).send('ScannedCode is required'); 
+    // }
     
-    const contactInfo = await getContactData(scannedCode);
-    console.log('Contact info received from external service:', JSON.stringify(contactInfo));
-
-    //build the JSON to post to th automation server    
-    const automationParameters = await getAutomationParametersFromConfig();
-
-    const automationData = { ...scanInfo, ...contactInfo, ...automationParameters };
-
-    //call automation service    
-    const automationConfig = config.get('automationConfig');
-    const automationAddress = automationConfig.serverAddress; 
-    const automationPort = automationConfig.serverPort;
-    const automationURL = `http://${automationAddress}:${automationPort}`;
-    logger.info("Automation URL: " +  automationURL);    
+    // const contactInfo = await getContactData(scannedCode);
+    // console.log('Contact info received from external service:', JSON.stringify(contactInfo));
     
-     // Create the filename with the current date and time
-     const now = new Date();
-     const dateTime = `${String(now.getDate()).padStart(2, '0')}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getFullYear()).slice(-2)}-${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}${String(now.getSeconds()).padStart(2, '0')}`;
-     const filename = `automationData-${dateTime}.json`;
- 
-     // Write the automationData object to a JSON file
-     const filePath = path.join(__dirname, '../automationTriggers', filename);
-     const automationDataJSON = JSON.stringify(automationData, null, 2);
-     fs.writeFileSync(filePath, automationDataJSON);
-     logger.info(`Automation data saved to file: ${filePath}`);
+    //NEW code . refactored by moving the parameter building to the integrationController
+    // if(isPrintRequired){           
+    //   const result = await postToAutomationServer(...leadInfo);
+    //   const isSuccess = result.isSuccess;
+    //   const message = result.message;
+    // }
+        
+    // logger.info(JSON.stringify(result, null, 2));
+    // res.render('scan-result', { title: 'Result', leadInfo });
 
-    const result = await postToAutomationServer(automationURL, automationData);
-    const isSuccess = result.isSuccess;
-    const message = result.message;
-
-    logger.info(JSON.stringify(result, null, 2));
-    res.render('scan-result', { title: 'Scan Result', contactInfo, isSuccess, message });
-
-  } catch (err) {
-    console.error('Error processing contact info and saving customer info:', err);
-    res.status(500).send('Error fetching customer info');
-  }
+  // } catch (err) {
+  //   console.error('Error:', err);
+  //   res.status(500).send('Error fetching customer info');
+  // }
 });
 
+/* POST scan result page. */
+router.post('/', function(req, res, next) {
+  const { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet } = req.body;
+  
+  if (!firstName || !lastName || !phone) {
+    return res.status(400).send('First name, last name, and phone are required.');
+  }
+
+  const leadInfo = { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
+
+  logger.info(JSON.stringify(leadInfo, null, 2));
+  res.render('scan-result', { title: 'Result', leadInfo });
+});
 module.exports = router;

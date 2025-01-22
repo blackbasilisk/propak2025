@@ -1,21 +1,20 @@
 const { poolPromise, sql } = require('../db');
 var logger = require('../logger'); // Import the custom logger
 
-async function saveScanResult(scanInfo) {    
-  const { ScannedCode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = scanInfo;
-
-  if (!ScannedCode) {
-    throw new Error('QR code is required');
+async function saveScanInfo(scanInfo) {    
+  const { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = scanInfo;
+  logger.info('(scanController.saveScanResult) scanInfo: ' + JSON.stringify(scanInfo)); 
+  if (!barcode) {
+    throw new Error('Barcode is required');
   }
-
 
   try {
     //save scanned code to DB
-    var query = 'INSERT INTO ScanResults (ScannedCode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet) VALUES (@ScannedCode, @isPrintHR, @isPrintBOD, @isPrintSC, @isPrintEidos, @isPrintCL, @isPrintDS, @isPrintColorJet)';
+    var query = 'INSERT INTO ScanResults (Barcode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet) VALUES (@barcode, @isPrintHR, @isPrintBOD, @isPrintSC, @isPrintEidos, @isPrintCL, @isPrintDS, @isPrintColorJet)';
     query += ' SELECT SCOPE_IDENTITY() AS rowId';
     const pool = await poolPromise;
     const result = await pool.request()
-      .input('ScannedCode', sql.NVarChar, ScannedCode)
+      .input('barcode', sql.NVarChar, barcode)
       .input('isPrintHR', sql.Bit, isPrintHR ? 1 : 0)
       .input('isPrintBOD', sql.Bit, isPrintBOD ? 1 : 0)
       .input('isPrintSC', sql.Bit, isPrintSC ? 1 : 0)
@@ -24,10 +23,13 @@ async function saveScanResult(scanInfo) {
       .input('isPrintDS', sql.Bit, isPrintDS ? 1 : 0)
       .input('isPrintColorJet', sql.Bit, isPrintColorJet ? 1 : 0)      
       .query(query);
-
-      logger.info('QR code and checkbox selection saved successfully. RowId: ' + result.recordset[0].rowId);   
       
-      return result.recordset[0].rowId;
+      if (result.recordset.length > 0) {
+        logger.info('Barcode and checkbox selection saved successfully. Result:  ' + JSON.stringify(result.recordset[0]));   
+        return { success: true, rowId: result.recordset[0].rowId };
+      } else {
+        return { success: false };
+      }
     }    
     catch (err) {
     logger.error('Error saving scan result:', err);
@@ -41,7 +43,7 @@ async function getScanInfo(rowId) {
   }
 
   try {
-    const query = 'SELECT ScannedCode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet FROM ScanResults WHERE Id = @rowId';
+    const query = 'SELECT Barcode, IsPrintHR, IsPrintBOD, IsPrintSC, IsPrintEidos, IsPrintCL, IsPrintDS, IsPrintColorJet FROM ScanResults WHERE Id = @rowId';
     
     const pool = await poolPromise;
     const result = await pool.request()
@@ -68,4 +70,4 @@ async function getScanInfo(rowId) {
   }
 }
 
-module.exports = { saveScanResult, getScanInfo };
+module.exports = { saveScanInfo, getScanInfo };

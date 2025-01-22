@@ -182,3 +182,20 @@ button:hover {
 .contact-info-table tr:hover {
   background-color: #ddd;
 }
+
+.print-tech-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  .print-tech-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: white;
+    color: black;
+  }
+  .print-tech-table td.selected {
+    background-color: #336600;
+    color: white;
+  }

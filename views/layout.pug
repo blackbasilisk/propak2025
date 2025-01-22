@@ -10,8 +10,8 @@ html
       a(href='/')
         img(src='/images/REA_SA.jpg' alt='REA South Africa' class='header-image')
       if user
-        p Welcome, #{user.Firstname}!
-        a(href='/logout') Logout
+        p Logged in user: #{user.Firstname}. 
+          a(href='/logout') Logout
       else if currentPath !== '/login'
         a(href='/login') Login
 

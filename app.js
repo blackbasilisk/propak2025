@@ -34,6 +34,8 @@ logger.info('Application starting...');
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
+app.use(bodyParser.json()); // Middleware to parse JSON bodies (if needed)
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 

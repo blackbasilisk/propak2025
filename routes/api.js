@@ -1,23 +1,24 @@
 var express = require('express');
 var router = express.Router();
-const { getPersonData } = require('../controllers/contactController'); // Import the controller function
-const { saveScanResult } = require('../controllers/scanController'); // Import the controller function
+const { getContactData } = require('../controllers/contactController'); // Import the controller function
+const { saveScanInfo } = require('../controllers/scanController'); // Import the controller function
+const {saveLeadInfo } = require('../controllers/leadController'); // Import the controller function
 
 var logger = require('../logger'); // Import the custom logger
 const { poolPromise, sql } = require('../db');
 
 /* POST scanned result */
 router.post('/save-scan-info', async function(req, res, next) {
-  const { ScannedCode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = req.body;
+  const { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet } = req.body;
 
-  if (!ScannedCode) {
-    return res.status(400).json({ success: false, message: 'QR code is required' });
+  if (!barcode) {
+    return res.status(400).json({ success: false, message: 'Barcode is required' });
   }
 
   try {
      // Create an object containing the scanned data
      const scanInfo = {
-      ScannedCode,
+      barcode: barcode,
       isPrintHR: isPrintHR ? 1 : 0,
       isPrintBOD : isPrintBOD  ? 1 : 0,
       isPrintSC: isPrintSC ? 1 : 0,
@@ -27,10 +28,18 @@ router.post('/save-scan-info', async function(req, res, next) {
       isPrintColorJet : isPrintColorJet ? 1 : 0,
     };
 
+    const r = await saveScanInfo(scanInfo);
 
-    const rowId = await saveScanResult(scanInfo);
-
-    res.json({ success: true, message: 'QR code and checkbox values saved successfully', rowId: rowId});
+    logger.info('API save-scan-info:', r);
+    if (r.success) {      
+      res.status(200).json( { success: r.success, rowId: r.rowId });
+    }
+    else{
+      logger.error("Failed to save scan result. Result: " + JSON.stringify(r));
+      res.status(500).json({ success: false, message: 'Error saving QR code and checkbox values' });
+      //throw new Error('Failed to save scan result');
+    }
+    
   } catch (err) {
     logger.error('Error saving scan result:', err);
     res.status(500).json({ success: false, message: 'Error saving QR code and checkbox values', error: err.message });
@@ -51,16 +60,57 @@ router.post('/log-info', function(req, res, next) {
   res.status(200).json({ success: true });
 });
 
-/* GET person data using the QR Code that was scanned */
-router.get('/get-person-data', async function(req, res, next) {
-  const qrCode = req.query.qrCode;
+/* GET contact data using the QR Code that was scanned */
+router.get('/get-contact-info', async function(req, res, next) {
+  const barcode = req.query.barcode;
 
   try {
-    const person = await getPersonData(qrCode);
-    res.json({ success: true, person });
+    const contactInfo = await getContactData(barcode);
+    
+    res.json({ success: true, contactInfo });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
+});
+
+
+/* POST log info */
+router.post('/save-lead-info', async function(req, res, next) {
+
+  try {
+    const lead = req.body;
+
+    console.log('API save-lead-info:', lead);
+
+    if (lead) {
+      // const firstName = req.body.FirstName;
+      // const lastName = req.body.LastName;
+      // const email = req.body.Email;
+      // const company = req.body.Company;
+      // const phone = req.body.Phone;
+      // const scannedCode = req.body.scannedCode;
+      // const userId = req.body.Id;    
+      // const isPrintHR = req.body.isPrintHR === 'false';
+      // const isPrintBOD = req.body.isPrintBOD === 'false';
+      // const isPrintSC = req.body.isPrintSC === 'false';
+      // const isPrintEidos = req.body.isPrintEidos === 'false';
+      // const isPrintDS = req.body.isPrintDS === 'false';
+      // const isPrintCL = req.body.isPrintCL === 'false';
+      // const isPrintColorJet = req.body.isPrintColorJet === 'false';
+      
+      //const lead = { FirstName, LastName, Email, Company, Phone, scannedCode, userId, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
+      const result = await saveLeadInfo(lead);
+      if(result.success){
+        res.json({ success: true, message: 'Lead saved successfully', lead: lead});
+      }
+      else{
+        throw new Error('Failed to save Lead Info: ' + result.message);
+      }
+    } 
+  } catch (err) {
+    logger.error('(1) Error saving lead info:', err);
+    res.status(500).json({ success: false, message: 'Error saving lead info', err});
+  }      
 });
 
 module.exports = router;

@@ -2,59 +2,54 @@ extends layout
 
 block content
   h1= title
-
-  if contactInfo
+  
+  p 
+  if leadInfo
     table.contact-info-table
       tr
         th First Name
-        td= contactInfo.FirstName        
-        tr
+        td= leadInfo.firstName ? leadInfo.firstName : 'N/A'          
+      tr
         th Last Name
-        td= contactInfo.LastName
+        td= leadInfo.lastName ? leadInfo.lastName : 'N/A'
       tr
         th Company
-        td= contactInfo.Company
+        td= leadInfo.company ? leadInfo.company : 'N/A'
       tr
         th Email
-        td= contactInfo.Email      
+        td= leadInfo.email ? leadInfo.email : 'N/A'            
       tr
         th Phone
-        td= contactInfo.Phone
+        td= leadInfo.phone ? leadInfo.phone : 'N/A'
+      
+      - var isPrintRequired = leadInfo.isPrintHR === 'true' || leadInfo.isPrintBOD === 'true' || leadInfo.isPrintSC === 'true' || leadInfo.isPrintEidos === 'true' || leadInfo.isPrintCL === 'true' || leadInfo.isPrintDS === 'true' || leadInfo.isPrintColorJet === 'true' || leadInfo.isPrintOther === 'true';
+
+      if isPrintRequired
+        table.print-tech-table
+          tr
+            td(class=leadInfo.isPrintHR === 'true' ? 'selected' : '') HR
+            td(class=leadInfo.isPrintBOD === 'true' ? 'selected' : '') BOD
+            td(class=leadInfo.isPrintSC === 'true' ? 'selected' : '') SC
+            td(class=leadInfo.isPrintEidos === 'true'? 'selected' : '') Eidos
+          tr
+            td(class=leadInfo.isPrintCL === 'true' ? 'selected' : '') CL
+            td(class=leadInfo.isPrintDS === 'true' ? 'selected' : '') DS
+            td(class=leadInfo.isPrintColorJet === 'true' ? 'selected' : '') ColorJet
+            td(class=leadInfo.isPrintDOD === 'true' ? 'selected' : '') DOD
+
       // Add more fields as necessary
   else
     p No contact information available.
 
-  if isSuccess
-    p Scan was successful!
-  else 
-    h2 Automation Error 
-    if message
-      pre= JSON.stringify(message, null, 2)
-    else 
-      p An unknown error occurred.
+  //- if isSuccess
+  //-   p Scan was successful!
+  //- else 
+  //-   h2 Automation Error 
+  //-   if message
+  //-     pre= JSON.stringify(message, null, 2)
+  //-   else 
+  //-     p An unknown error occurred.
 
   // Back to Home button
   a(href='/')
     button Back to Home
-
-//- // Add some custom styles for the contact info table
-//- style.
-//-   .contact-info-table {
-//-     width: 100%;
-//-     border-collapse: collapse;
-//-     margin-bottom: 20px;
-//-   }
-//-   .contact-info-table th, .contact-info-table td {
-//-     border: 1px solid #ddd;
-//-     padding: 8px;
-//-   }
-//-   .contact-info-table th {
-//-     background-color: #f2f2f2;
-//-     text-align: left;
-//-   }
-//-   .contact-info-table tr:nth-child(even) {
-//-     background-color: #f9f9f9;
-//-   }
-//-   .contact-info-table tr:hover {
-//-     background-color: #ddd;
-//-   }
