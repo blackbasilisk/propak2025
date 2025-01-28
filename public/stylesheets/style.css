@@ -199,3 +199,26 @@ button:hover {
     background-color: #336600;
     color: white;
   }
+  /* Add any additional styles for the error page if needed */
+.error-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.error-container p {
+  margin-bottom: 20px;
+}
+
+.error-container button {
+  background-color: #004174;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.error-container button:hover {
+  background-color: #003366;
+}

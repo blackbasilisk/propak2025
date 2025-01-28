@@ -254,7 +254,8 @@ block content
     function handleError(message) {
       console.error(message);
       // Display the error message to the user (you can customize this as needed)
-      alert(message);
+      window.location.href = `/error?message=${encodeURIComponent(message)}`;
+      //alert(message);
     }
 
     // Add event listener to the scan button
@@ -268,7 +269,7 @@ block content
         html5QrCode.start(
           { facingMode: "environment" }, // Use rear camera
           {
-            fps: 10,    // Scans per second
+            fps: 20,    // Scans per second
             qrbox: { width: 250, height: 250 },
             rememberLastUsedCamera: false  // Disable storing the last used camera
           },

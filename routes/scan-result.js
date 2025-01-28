@@ -25,7 +25,9 @@ router.get('/', async function(req, res, next) {
     //const isPrintRequired = isPrintHR || isPrintBOD || isPrintSC || isPrintEidos || isPrintDS || isPrintCL || isPrintColorJet;
 
   if (!firstName || !lastName || !phone) {
-    return res.status(400).send('First name, last name and phone are required.');
+    //return res.status(400).send('First name, last name and phone are required.');
+    const message = 'First name, last name, and phone are required.';
+    res.render('error', { title: 'Error', message });
   }
   const leadInfo = { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
 
@@ -65,7 +67,9 @@ router.post('/', function(req, res, next) {
   const { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet } = req.body;
   
   if (!firstName || !lastName || !phone) {
-    return res.status(400).send('First name, last name, and phone are required.');
+    const message = 'First name, last name, and phone are required.';
+    res.render('error', { title: 'Error', message });
+    //return res.status(400).send('First name, last name, and phone are required.');
   }
 
   const leadInfo = { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };

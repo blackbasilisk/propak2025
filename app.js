@@ -15,6 +15,7 @@ var apiRouter = require('./routes/api'); // Import the api router
 var scanResultRouter = require('./routes/scan-result'); // Import the scan result router
 var loginRouter = require('./routes/login'); // Import the login router
 var logoutRouter = require('./routes/logout'); // Import the login router
+var errorRouter = require('./routes/error'); 
 
 var app = express();
 
@@ -73,7 +74,7 @@ app.use('/api', apiRouter); // Use the router for API routes
 app.use('/scan-result', scanResultRouter); // Use the scan result router
 app.use('/login', loginRouter); // Use the login router
 app.use('/logout', logoutRouter); // Use the login router
-
+app.use('/error', errorRouter); // Use the error router
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -89,9 +90,9 @@ app.use(function(err, req, res, next) {
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+// render the error page
+res.status(err.status || 500);
+res.render('error', { title: 'Error', message: err.message });
 });
 
 module.exports = app;
