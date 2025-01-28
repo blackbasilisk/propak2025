@@ -68,7 +68,7 @@ block content
   script.
     window.user = !{JSON.stringify(user)};
 
-    const html5QrCode = new Html5Qrcode("reader");
+    //const html5QrCode = new Html5Qrcode("reader");
     
     let errorShown = false;
     let isProcessing = false;
@@ -158,13 +158,15 @@ block content
     async function onScanSuccess(decodedText, decodedResult) {
       if (isProcessing) return; // Prevent multiple API calls
       isProcessing = true;
+      
 
       // Handle the scanned code
       logInfoToServer(`Code matched = ${decodedText}, ${JSON.stringify(decodedResult)}`);
             
       // Stop the QR code scanner
       try {
-        await html5QrCode.stop();
+        await html5QrCode.stop().catch(err => handleError(`Error stopping QR code scanner: ${err}`));;
+        
         document.getElementById('loading-spinner').style.display = 'flex';
         document.getElementById('scanButton').disabled = true;
         // Close the modal
@@ -260,24 +262,50 @@ block content
 
     // Add event listener to the scan button
     document.addEventListener('DOMContentLoaded', function() {
+    html5QrCode = new Html5Qrcode("reader");
+
+
+    // Preload the camera feed
+    html5QrCode.start(
+      { facingMode: "environment" }, // Use rear camera
+      {
+        fps: 2,    // Scans per second
+        qrbox: { width: 250, height: 250 },
+        rememberLastUsedCamera: false,  // Disable storing the last used camera
+        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+        formatsToSupport:  [Html5QrcodeSupportedFormats.QR_CODE]
+      },
+          onScanSuccess,
+          onScanFailure
+    ).then(() => {
+      
+      
+      //- html5QrCode.clear();
+    }).catch(err => {
+      handleError(`Error preloading QR code scanner: ${err}`);
+    });
+
       document.getElementById('scanButton').addEventListener('click', function() {
         errorShown = false; // Reset the error flag when the scan button is clicked
         isProcessing = false; // Reset the processing flag when the scan button is clicked
         document.getElementById('barcodeScannerModel').style.display = 'flex';
         document.querySelector('.content').classList.add('modal-open');
-
+       //- // Stop the camera feed after preloading
+      html5QrCode.stop().catch(err => alert(`Error stopping QR code scanner: ${err}`)).then(() => {
         html5QrCode.start(
           { facingMode: "environment" }, // Use rear camera
           {
-            fps: 20,    // Scans per second
+            fps: 10,    // Scans per second
             qrbox: { width: 250, height: 250 },
-            rememberLastUsedCamera: false  // Disable storing the last used camera
+            rememberLastUsedCamera: false,  // Disable storing the last used camera
+            supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+            formatsToSupport:  [Html5QrcodeSupportedFormats.QR_CODE]
           },
           onScanSuccess,
           onScanFailure
         ).catch(err => {
           handleError(`Error starting QR code scanner: ${err}`);
-        });
+        });});
       });
 
       document.getElementById('closeModal').addEventListener('click', function() {
