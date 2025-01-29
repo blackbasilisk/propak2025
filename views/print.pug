@@ -1,4 +1,54 @@
 extends layout
 
 block content
-  
+  .loading-container#loadingContainer(style='display:none;')
+    img(src='/images/loading.gif', alt='Loading...')
+    p Loading, please wait...
+
+  .result-container#resultContainer(style='display:none;')
+    p#resultMessage
+
+    a(href='/')
+      button Back to Home
+
+  script.
+    window.printInfo = !{JSON.stringify(printInfo)}
+
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('Page loaded, showing loading container');
+      // Show the loading container
+      document.getElementById('loadingContainer').style.display = 'block';
+
+      fetch('/api/print', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(window.printInfo)
+      })
+      .then(response => {
+        if (response.status === 500) {
+          window.location.href = `/error?message=${encodeURIComponent('Server error occurred')}`;
+          return;
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('API call completed, hiding loading container');
+        // Hide the loading container
+        document.getElementById('loadingContainer').style.display = 'none';
+
+        // Display the result
+        const resultContainer = document.getElementById('resultContainer');
+        const resultMessage = document.getElementById('resultMessage');
+        if (data.success) {
+          resultMessage.textContent = 'Print request was successful: ' + data.message;
+        } else {
+          resultMessage.textContent = 'Print request failed: ' + data.message;
+        }
+        resultContainer.style.display = 'block';
+      })
+      .catch(error => {
+        window.location.href = `/error?message=${encodeURIComponent('Error: ' + error.message)}`;
+      });
+    });

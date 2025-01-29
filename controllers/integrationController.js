@@ -2,10 +2,12 @@ const axios = require('axios');
 const { poolPromise, sql } = require('../db');
 var logger = require('../logger'); // Import the custom logger
 const config = require('config');
+const fs = require('fs');
+const path = require('path');
 
 async function getAutomationParametersFromConfig() {  
   try {
-    
+    console.log('getAutomationParametersFromConfig');
 
     //fetch the label names and printer names from the config file
     const labelNames = config.get('labelNames');
@@ -25,7 +27,7 @@ async function getAutomationParametersFromConfig() {
 
 async function postToAutomationServer(leadInfo) {  
   try {
-    
+    console.log('Calling getAutomationParametersFromConfig');
     //build the JSON to post to th automation server    
     const automationParameters = await getAutomationParametersFromConfig();
 
@@ -50,7 +52,7 @@ async function postToAutomationServer(leadInfo) {
     logger.info(`Automation data saved to file: ${filePath}`);
 
     // Perform the POST request with a timeout of 60 seconds
-    const response = await axios.post(automationUrl, automationData, {
+    const response = await axios.post(automationURL, automationData, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -63,7 +65,7 @@ async function postToAutomationServer(leadInfo) {
       logger.info('Response from automation server:', response.data);
       return {
         status: response.status,
-        isSuccess: true,
+        success: true,
         message: response.data
       };
     } else {
@@ -71,7 +73,7 @@ async function postToAutomationServer(leadInfo) {
       logger.info('Error: Status ' + response.status + ' returned from server');
       return {
         status: response.status,
-        isSuccess: false,
+        success: false,
         message: `Unexpected response status: ${response.status}`
       };
     }
@@ -79,7 +81,7 @@ async function postToAutomationServer(leadInfo) {
   } catch (err) {    
     logger.error('Error posting to automation server:', err);
     return {      
-      isSuccess: false,
+      success: false,
       message: err.message
     };    
   }

@@ -57,7 +57,8 @@ block content
             a(href='/')
               button Back to Home     
           td 
-            a(href='/print')
-              button Print             
+            // Print button with parameters
+            a(href=`/print?firstName=${leadInfo.firstName !== 'N/A' ? leadInfo.firstName : ''}&lastName=${leadInfo.lastName !== 'N/A' ? leadInfo.lastName : ''}&company=${leadInfo.company !== 'N/A' ? leadInfo.company : ''}&email=${leadInfo.email !== 'N/A' ? leadInfo.email : ''}&phone=${leadInfo.phone !== 'N/A' ? leadInfo.phone : ''}&isPrintHR=${leadInfo.isPrintHR}&isPrintBOD=${leadInfo.isPrintBOD}&isPrintSC=${leadInfo.isPrintSC}&isPrintEidos=${leadInfo.isPrintEidos}&isPrintCL=${leadInfo.isPrintCL}&isPrintDS=${leadInfo.isPrintDS}&isPrintColorJet=${leadInfo.isPrintColorJet}&isPrintDOD=${leadInfo.isPrintDOD ? leadInfo.isPrintDOD : false}`)
+              button Print            
           
   

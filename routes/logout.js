@@ -8,10 +8,4 @@ router.get('/', function(req, res, next) {
     //res.render('logout', { title: 'Logout' });
 });
 
-// router.post('/', function(req, res, next) {        
-//     delete req.session.user;
-//     delete req.session.returnTo;
-//     res.redirect('/');
-// });
-
 module.exports = router;

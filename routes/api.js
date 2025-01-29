@@ -3,6 +3,8 @@ var router = express.Router();
 const { getContactData } = require('../controllers/contactController'); // Import the controller function
 const { saveScanInfo } = require('../controllers/scanController'); // Import the controller function
 const {saveLeadInfo } = require('../controllers/leadController'); // Import the controller function
+const { postToAutomationServer } = require('../controllers/integrationController'); // Import the controller function
+
 
 var logger = require('../logger'); // Import the custom logger
 const { poolPromise, sql } = require('../db');
@@ -112,6 +114,28 @@ router.post('/save-lead-info', async function(req, res, next) {
     logger.error('(1) Error saving lead info:', err);
     res.status(500).json({ success: false, message: 'Error saving lead info', err});
   }      
+});
+
+
+
+/* GET contact data using the QR Code that was scanned */
+router.post('/print', async function(req, res, next) {
+  
+  const printInfo = req.body;
+  
+  console.log('API: API print:', printInfo);
+
+  try {
+    //call the postToAutomationServer method in the IntegrationController
+    //send the result back to the client
+
+    const result = await postToAutomationServer(printInfo);
+    console.log('API print:', result);    
+    res.json(result);
+
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
 });
 
 module.exports = router;

@@ -16,6 +16,7 @@ var scanResultRouter = require('./routes/scan-result'); // Import the scan resul
 var loginRouter = require('./routes/login'); // Import the login router
 var logoutRouter = require('./routes/logout'); // Import the login router
 var errorRouter = require('./routes/error'); 
+var printRouter = require('./routes/print'); 
 
 var app = express();
 
@@ -75,7 +76,7 @@ app.use('/scan-result', scanResultRouter); // Use the scan result router
 app.use('/login', loginRouter); // Use the login router
 app.use('/logout', logoutRouter); // Use the login router
 app.use('/error', errorRouter); // Use the error router
-
+app.use('/print', printRouter); // Use the print router
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
