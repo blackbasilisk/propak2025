@@ -1,0 +1,101 @@
+{
+	"info": {
+		"_postman_id": "c14b33d2-0d8f-4ba4-8aec-89de68028637",
+		"name": "OneLead API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2465124"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"davereaapi\",\n    \"password\": \"PzbyRWPydA!^4SZxsDJJ\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://onelead.teqstra.com/api/auth/sentinel",
+					"protocol": "https",
+					"host": [
+						"onelead",
+						"teqstra",
+						"com"
+					],
+					"path": [
+						"api",
+						"auth",
+						"sentinel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get QR Code Details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "60|6nB3ldZx3gDG5oLp1DGcIqY1GfDgSEB46gsv9fmdf42ad4a1",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://onelead.teqstra.com/api/leads/lookup/2824107194",
+					"protocol": "https",
+					"host": [
+						"onelead",
+						"teqstra",
+						"com"
+					],
+					"path": [
+						"api",
+						"leads",
+						"lookup",
+						"2824107194"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

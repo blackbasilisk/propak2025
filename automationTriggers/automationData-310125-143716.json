@@ -1,0 +1,33 @@
+{
+  "leadInfo": {
+    "firstName": "Jack",
+    "lastName": "Black",
+    "company": "Jacks Inc.",
+    "email": "jackie@doomsday.com",
+    "phone": "123",
+    "isPrintHR": "false",
+    "isPrintBOD": "true",
+    "isPrintSC": "false",
+    "isPrintEidos": "false",
+    "isPrintCL": "false",
+    "isPrintDS": "false",
+    "isPrintColorJet": "false",
+    "isPrintDOD": "false"
+  },
+  "LabelNameHR": "LabelHR",
+  "LabelNameGK": "LabelGK",
+  "LabelNameUP": "LabelUP",
+  "LabelNameSC": "LabeLSC",
+  "LabelNameEidos": "LabelEidos",
+  "LabelNameCL": "LabelCL",
+  "LabelNameDS": "LabelDS",
+  "LabelNameColorJet": "LabelColorJet",
+  "PrinterNameHR": "REA JET HR 2K",
+  "PrinterNameGK": "-",
+  "PrinterNameUP": "REA JET UP",
+  "PrinterNameSC": "REA JET SC 2.0",
+  "PrinterNameEidos": "-",
+  "PrinterNameCL": "REA JET CL",
+  "PrinterNameDS": "-",
+  "PrinterNameColorJet": "REA LABEL ColorJet 2"
+}
