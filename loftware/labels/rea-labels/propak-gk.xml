@@ -1,0 +1,538 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<REA-JET>
+  <Label version="3.9" protected="False">
+    <Meta name="author" content="NICHOLAS/Microsoft Windows NT 6.2.9200.0" />
+    <Meta name="designer" content="REA JET LabelCreator" />
+    <Meta name="lastchangedversion" content="Version 3.9.4.5" />
+    <Meta name="designerversion" content="Version 3.9.4.5" />
+    <Meta name="lastchanged" content="Monday, February 17, 2025 REA JET LabelCreator" />
+    <Meta name="description" content="No description" />
+    <Meta name="objectcounter" content="8" />
+    <Name>New label 1</Name>
+    <Size>
+      <Width autosize="False" unit="mm">145</Width>
+      <Height autosize="False" unit="mm">100</Height>
+    </Size>
+    <Layout>
+      <Object name="Textbox_1" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">5</Fontsize>
+            <Emphasis>Medium</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="True">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">0.3215189873417721518987341765</X>
+          <Y unit="mm">0.5023734177215189873417721513</Y>
+          <Z transparency="True">0</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">70.734177215189873417721518986</Width>
+          <Height autosize="False" unit="mm">28.635284810126582278481012658</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="REA South Africa&#xD;&#xA;10 3rd Avenue &#xD;&#xA;Walmer&#xD;&#xA;Port Elizabeth&#xD;&#xA;South Africa" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Text static_2" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">6</Fontsize>
+            <Emphasis>Bold</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="False">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">61.892405063291139240506329115</X>
+          <Y unit="mm">-1.6745780590717299578059071728</Y>
+          <Z transparency="True">1</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">15.754430379746835443037974683</Width>
+          <Height autosize="False" unit="mm">9.377637130801687763713080169</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="3KG" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Textbox_3" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">5</Fontsize>
+            <Emphasis>Medium</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="True">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">85.84556962025316455696202532</X>
+          <Y unit="mm">0.6698312236286919831223628701</Y>
+          <Z transparency="True">2</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">56.426582278481012658227848101</Width>
+          <Height autosize="False" unit="mm">15.741033755274261603375527425</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="SHP#: 03A6 88GS F4S&#xD;&#xA;SHP WT: 3KG&#xD;&#xA;DATE: 31 MAR 2025" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Text static_4" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">5</Fontsize>
+            <Emphasis>Bold</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="False">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">0.3215189873417721518987341765</X>
+          <Y unit="mm">29.81</Y>
+          <Z transparency="True">3</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">25.560759493670886075949367087</Width>
+          <Height autosize="False" unit="mm">8.037974683544303797468354431</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="SHIP TO:" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Textbox_1_5" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">5</Fontsize>
+            <Emphasis>Medium</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="True">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">0.3215189873417721518987341765</X>
+          <Y unit="mm">37.51</Y>
+          <Z transparency="True">0</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">70.734177215189873417721518986</Width>
+          <Height autosize="False" unit="mm">28.635284810126582278481012658</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="PROPAK&#xD;&#xA;EXPO CENTRE NASREC&#xD;&#xA;JOHANNESBURG&#xD;&#xA;SOUTH AFRICA" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Text static_6" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">6</Fontsize>
+            <Emphasis>Medium</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="False">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">0.3215189873417721518987341765</X>
+          <Y unit="mm">59.78</Y>
+          <Z transparency="True">4</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">40.350632911392405063291139241</Width>
+          <Height autosize="False" unit="mm">8.540348101265822784810126583</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="REA EXPESS" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Text static_7" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">6</Fontsize>
+            <Emphasis>Medium</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="1" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="False">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">0.3215189873417721518987341765</X>
+          <Y unit="mm">65.64</Y>
+          <Z transparency="True">5</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">111.56708860759493670886075950</Width>
+          <Height autosize="False" unit="mm">8.707805907172995780590717299</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="TRACKING #: 1Z 03B 588 86 4003 6419" protected="False" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="ITF14_8" protected="False">
+        <ITF14>
+          <PixelReductionHorz unit="px">0</PixelReductionHorz>
+          <PixelReductionVert unit="px">0</PixelReductionVert>
+          <ReadableText value="0">
+            <Font>
+              <Name>FreeSans</Name>
+              <Fontsize unit="mm">0</Fontsize>
+              <Emphasis>Medium</Emphasis>
+            </Font>
+            <Alignment>
+              <HAlign>HCenter</HAlign>
+            </Alignment>
+            <Distance unit="mm" value="0" />
+          </ReadableText>
+          <ModuleSize optimize="True" unit="mm">0.0</ModuleSize>
+          <CheckDigit>2</CheckDigit>
+          <Ratio>2.5</Ratio>
+          <BearerBar type="0" unit="mm">1</BearerBar>
+          <QuietZone value="0.0" />
+        </ITF14>
+        <Position>
+          <X unit="mm">0.3215189873417721518987341765</X>
+          <Y unit="mm">74.52</Y>
+          <Z transparency="False">6</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">110.76329113924050632911392405</Width>
+          <Height autosize="False" unit="mm">24.281381856540084388185654010</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_1" directedit="False" forceinput="False" value="1234567890123" protected="False" regex="^([0-9]{13,14})$" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+    </Layout>
+  </Label>
+</REA-JET>

@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<REA-JET>
+  <Label version="3.8" protected="False">
+    <Meta name="author" content="NICHOLAS/Microsoft Windows NT 6.2.9200.0" />
+    <Meta name="designer" content="REA JET LabelCreator" />
+    <Meta name="lastchangedversion" content="Version 3.9.4.5" />
+    <Meta name="designerversion" content="Version 3.9.4.5" />
+    <Meta name="lastchanged" content="Wednesday, February 26, 2025 REA JET LabelCreator" />
+    <Meta name="description" content="No description" />
+    <Meta name="objectcounter" content="13" />
+    <Name>New label 1</Name>
+    <Size>
+      <Width autosize="False" unit="mm">40</Width>
+      <Height autosize="False" unit="mm">12.70</Height>
+    </Size>
+    <Layout>
+      <Object name="qrcode" protected="False">
+        <QR>
+          <QRVersion>0</QRVersion>
+          <ModuleSize unit="mm" optimizemode="modulation">0.0</ModuleSize>
+          <QuietZone unit="modulesize">0.0</QuietZone>
+          <PixelReductionHorz unit="px">0</PixelReductionHorz>
+          <PixelReductionVert unit="px">0</PixelReductionVert>
+          <ErrorCorrection>1</ErrorCorrection>
+          <OptimalMaskPattern>True</OptimalMaskPattern>
+        </QR>
+        <Position>
+          <X unit="mm">25.061333333333333333333333334</X>
+          <Y unit="mm">0.0846666666666666666666666658</Y>
+          <Z transparency="False">2</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">12.869333333333333333333333334</Width>
+          <Height autosize="False" unit="mm">12.615333333333333333333333334</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Reference protected="True" name="Reference_2">
+            <Object>promocode</Object>
+            <Content>Text_3</Content>
+          </Reference>
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <DotBC>
+            <Exposure unit="mm" value="0.0" />
+          </DotBC>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="promocode" protected="False">
+        <Text>
+          <Font>
+            <Name>FreeSans</Name>
+            <Fontsize unit="mm">3</Fontsize>
+            <Emphasis>Medium</Emphasis>
+          </Font>
+          <Direction>LeftToRight</Direction>
+          <Spacing mode="Font">
+            <Distance unit="mm" value="2" />
+          </Spacing>
+          <Scale>
+            <X value="1" />
+          </Scale>
+          <RadialMarking enabled="False">
+            <Orientation mode="Inner" />
+            <StartAngle unit="degree" value="0" />
+            <AngleRange unit="degree" value="360" />
+          </RadialMarking>
+          <Underline mode="None" />
+          <Strikethrough enabled="False" />
+          <Outline enabled="False">
+            <Width unit="mm" value="0.05" />
+          </Outline>
+          <TextBox enabled="False">
+            <Wrap mode="Word" />
+            <Justify value="False" />
+            <LineSpacing unit="mm" value="0" />
+          </TextBox>
+        </Text>
+        <Position>
+          <X unit="mm">1.1430</X>
+          <Y unit="mm">6.3076666666666666666666666658</Y>
+          <Z transparency="True">3</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">23.029333333333333333333333334</Width>
+          <Height autosize="False" unit="mm">5.5033333333333333333333333342</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <Static name="Text_4" directedit="False" forceinput="False" value="Code:" protected="False" />
+          <Variable name="Text_3" directedit="False" forceinput="False" value="C44WC" protected="False">
+            <PrintCount value="-1" mustchange="False" />
+          </Variable>
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Rectangle_10" protected="False">
+        <Rectangle>
+          <LineSize unit="mm">0.42</LineSize>
+          <Fill>False</Fill>
+        </Rectangle>
+        <Position>
+          <X unit="mm">0.5503333333333333333333333342</X>
+          <Y unit="mm">5.842</Y>
+          <Z transparency="True">5</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">24.045333333333333333333333334</Width>
+          <Height autosize="False" unit="mm">6.6463333333333333333333333342</Height>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+          <Boundary>
+            <Margin unit="mm" value="0.0" />
+          </Boundary>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+      <Object name="Bitmap_13" protected="False">
+        <Bitmap>
+          <Scale>Optimal</Scale>
+        </Bitmap>
+        <Position>
+          <X unit="mm">0.4656666666666666666666666658</X>
+          <Y unit="mm">0.1270</Y>
+          <Z transparency="True">6</Z>
+        </Position>
+        <Size>
+          <Width autosize="False" unit="mm">26.924</Width>
+          <Height autosize="False" unit="mm">7.1966666666666666666666666658</Height>
+          <Alignment>
+            <VAlign>Top</VAlign>
+            <HAlign>Left</HAlign>
+          </Alignment>
+        </Size>
+        <Inverted value="False">
+        </Inverted>
+        <HiddenCount value="0">
+        </HiddenCount>
+        <Content>
+          <File name="File_1" value="reawards.png" />
+        </Content>
+        <Effects>
+          <Effect type="DitheringFloydSteinberg">
+            <BlackLevel>100</BlackLevel>
+          </Effect>
+        </Effects>
+        <Pen mode="Both" id="0" />
+        <Subdivision value="Auto" />
+        <Hatches>
+        </Hatches>
+        <Meta name="PositionLocked" content="False" />
+        <Meta name="ContentCounter" content="1" />
+        <Rotation value="0" />
+      </Object>
+    </Layout>
+  </Label>
+</REA-JET>
