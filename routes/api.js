@@ -123,15 +123,43 @@ router.post('/print', async function(req, res, next) {
   
   const printInfo = req.body;
   
+  // Add a key-value pair to the printInfo object
+  printInfo.newKey = 'newValue';
+
   console.log('API: API print:', printInfo);
 
   try {
     //call the postToAutomationServer method in the IntegrationController
     //send the result back to the client
 
-    const result = await postToAutomationServer(printInfo);
-    console.log('API print:', result);    
-    res.json(result);
+    //If the print option is BOD, execute the automation trigger twice
+    //once for UP and once for GK
+    if(printInfo.isPrintBOD){      
+      printInfo.isPrintUP = 'false';
+      printInfo.isPrintGK = 'true';
+      const result1 = await postToAutomationServer(printInfo);
+      console.log('API print:', result1);    
+
+      printInfo.isPrintUP = 'true';
+      printInfo.isPrintGK = 'false';
+      const result2 = await postToAutomationServer(printInfo);
+      console.log('API print:', result2);    
+
+      if (!result1.success && !result2.success) {
+        res.status(500).json({ success: false, message: 'Failed to print BOD: Both UP and GK failed' });
+      } else if (!result1.success) {
+        res.status(500).json({ success: false, message: 'Failed to print BOD: UP failed' });
+      } else if (!result2.success) {
+        res.status(500).json({ success: false, message: 'Failed to print BOD: GK failed' });
+      } else {
+        res.json(result2);
+      }
+
+    } else {
+      const result = await postToAutomationServer(printInfo);
+      console.log('API print:', result);    
+      res.json(result);
+    }
 
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });

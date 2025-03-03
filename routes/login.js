@@ -11,7 +11,8 @@ router.get('/', function(req, res, next) {
 
 router.post('/', async function(req, res, next) {
   var username = req.body.username;
-  var password = req.body.password;
+  //var password = req.body.password;
+  var password = "123"; // Hardcoded password for testing purposes
 
   if (!username || !password) {
     logger.warn('Login attempt with missing username or password');

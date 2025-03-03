@@ -2,55 +2,32 @@ extends layout
 
 block content
   div.content
-    h1= title    
-    if user && user.IsAdmin   
-      // Checkboxes
-      label
-        input(type="checkbox" name="isPrintBOD" id="isPrintBOD" value="isPrintBOD")
-        | GK + UP (Corrugate Marking)
-      label
-        input(type="checkbox" name="isPrintHR" id="isPrintHR" value="isPrintHR")
-        | HR
-      label
-        input(type="checkbox" name="isPrintSC" id="isPrintSC" value="isPrintSC")
-        | SC 2.0
-      label
-        input(type="checkbox" name="isPrintEidos" id="isPrintEidos" value="isPrintEidos")
-        | Eidos
-      label
-        input(type="checkbox" name="isPrintCL" id="isPrintCL" value="isPrintCL")
-        | Laser
-      label
-        input(type="checkbox" name="isPrintDS" id="isPrintDS" value="isPrintDS")
-        | DS
-      label
-        input(type="checkbox" name="isPrintColorJet" id="isPrintColorJet" value="isPrintColorJet")
-        | ColorJet 2      
-    else 
+    h1= title
+    p       
       label(for="isPrintBOD") 
-        input(type="radio" name="singlePrintOption" id="isPrintBOD")
-        | GK + UP (Corrugate Marking)
-      label(for="isPrintHR") 
-        input(type="radio" name="singlePrintOption" id="isPrintHR")
-        | HR
+        input(type="radio" name="singlePrintOption" id="isPrintBOD" onchange="toggleScanButton()")
+        | BOD - UP + GK   
       label(for="isPrintSC") 
-        input(type="radio" name="singlePrintOption" id="isPrintSC")
+        input(type="radio" name="singlePrintOption" id="isPrintSC" onchange="toggleScanButton()")
         | SC 2.0
       label(for="isPrintEidos") 
-        input(type="radio" name="singlePrintOption" id="isPrintEidos")
+        input(type="radio" name="singlePrintOption" id="isPrintEidos" onchange="toggleScanButton()")
         | Eidos
       label(for="isPrintCL") 
-        input(type="radio" name="singlePrintOption" id="isPrintCL")
+        input(type="radio" name="singlePrintOption" id="isPrintCL" onchange="toggleScanButton()")
         | Laser
       label(for="isPrintDS") 
-        input(type="radio" name="singlePrintOption" id="isPrintDS")
+        input(type="radio" name="singlePrintOption" id="isPrintDS" onchange="toggleScanButton()")
         | DS
       label(for="isPrintColorJet") 
-        input(type="radio" name="singlePrintOption" id="isPrintColorJet")
+        input(type="radio" name="singlePrintOption" id="isPrintColorJet" onchange="toggleScanButton()")
         | ColorJet 2      
+      label(for="isPrintDOD") 
+        input(type="radio" name="singlePrintOption" id="isPrintDOD" onchange="toggleScanButton()")
+        | DOD      
 
     // Scan button
-    button#scanButton Scan
+    button#scanButton(disabled=true) Scan
     pre#customer-info
 
   // Modal popup for QR code scanner
@@ -62,14 +39,42 @@ block content
 
   div#loading-spinner(style="display:none;")
     div.spinner
-      img(src="/images/loader.gif", alt="Loading...")
+      img(src="/images/loading.gif", alt="Loading...")
     
+  style.
+    .content {
+      font-size: 14px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+    }
+    button {
+      font-size: 16px;
+      padding: 10px 20px;
+    }
+    .modal-content {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .spinner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+    .spinner img {
+      width: 50px;
+      height: 50px;
+    }
+
   script(src='https://unpkg.com/html5-qrcode')
   script.
     window.user = !{JSON.stringify(user)};
 
-    //const html5QrCode = new Html5Qrcode("reader");
-    
+    let html5QrCode; // Declare html5QrCode globally
     let errorShown = false;
     let isProcessing = false;
 
@@ -175,15 +180,16 @@ block content
 
         // Get checkbox values     
         const barcode = decodedText;   
-        const isPrintHR = document.getElementById('isPrintHR').checked;
+        const isPrintHR = false; //document.getElementById('isPrintHR').checked;
         const isPrintBOD = document.getElementById('isPrintBOD').checked;
         const isPrintSC = document.getElementById('isPrintSC').checked;
         const isPrintEidos = document.getElementById('isPrintEidos').checked;
         const isPrintCL = document.getElementById('isPrintCL').checked;
         const isPrintDS = document.getElementById('isPrintDS').checked;
+        const isPrintDOD = document.getElementById('isPrintDOD').checked;
         const isPrintColorJet = document.getElementById('isPrintColorJet').checked;    
         
-        const scanInfo = { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet, userId: window.user.Id };
+        const scanInfo = { barcode, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintDOD, isPrintColorJet, userId: window.user.Id };
         try {
 
           const saveScanInfoResult = await saveScanInfo(scanInfo);
@@ -197,7 +203,7 @@ block content
 
             if (contactInfo) {                                         
               contactInfo = contactInfo.contactInfo;
-              const leadInfo = { firstName: contactInfo.FirstName, lastName: contactInfo.LastName, email: contactInfo.Email, company: contactInfo.Company, phone: contactInfo.Phone, barcode: barcode, userId: window.user.Id, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintColorJet };
+              const leadInfo = { firstName: contactInfo.FirstName, lastName: contactInfo.LastName, email: contactInfo.Email, company: contactInfo.Company, phone: contactInfo.Phone, barcode: barcode, userId: window.user.Id, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintDOD, isPrintColorJet };
                logInfoToServer('Saving lead info to the server: ' + JSON.stringify(leadInfo));
               // Save lead info to the server incl. technology interest  
               const saveLeadResult = await saveLeadInfo(leadInfo);   
@@ -260,52 +266,55 @@ block content
       //alert(message);
     }
 
+    function toggleScanButton() {
+      const radioButtons = document.querySelectorAll('input[name="singlePrintOption"]');
+      const scanButton = document.getElementById('scanButton');
+      scanButton.disabled = !Array.from(radioButtons).some(rb => rb.checked);
+    }
+
     // Add event listener to the scan button
     document.addEventListener('DOMContentLoaded', function() {
-    html5QrCode = new Html5Qrcode("reader");
+      html5QrCode = new Html5Qrcode("reader"); // Initialize html5QrCode inside the event listener
 
-
-    // Preload the camera feed
-    html5QrCode.start(
-      { facingMode: "environment" }, // Use rear camera
-      {
-        fps: 2,    // Scans per second
-        qrbox: { width: 250, height: 250 },
-        rememberLastUsedCamera: false,  // Disable storing the last used camera
-        supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-        formatsToSupport:  [Html5QrcodeSupportedFormats.QR_CODE]
-      },
-          onScanSuccess,
-          onScanFailure
-    ).then(() => {
-      
-      
-      //- html5QrCode.clear();
-    }).catch(err => {
-      handleError(`Error preloading QR code scanner: ${err}`);
-    });
+      // Preload the camera feed
+      html5QrCode.start(
+        { facingMode: "environment" }, // Use rear camera
+        {
+          fps: 2,    // Scans per second
+          qrbox: { width: 250, height: 250 },
+          rememberLastUsedCamera: false,  // Disable storing the last used camera
+          supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+          formatsToSupport:  [Html5QrcodeSupportedFormats.QR_CODE]
+        },
+        onScanSuccess,
+        onScanFailure
+      ).then(() => {
+        // ...existing code...
+      }).catch(err => {
+        handleError(`Error preloading QR code scanner: ${err}`);
+      });
 
       document.getElementById('scanButton').addEventListener('click', function() {
         errorShown = false; // Reset the error flag when the scan button is clicked
         isProcessing = false; // Reset the processing flag when the scan button is clicked
         document.getElementById('barcodeScannerModel').style.display = 'flex';
         document.querySelector('.content').classList.add('modal-open');
-       //- // Stop the camera feed after preloading
-      html5QrCode.stop().catch(err => alert(`Error stopping QR code scanner: ${err}`)).then(() => {
-        html5QrCode.start(
-          { facingMode: "environment" }, // Use rear camera
-          {
-            fps: 10,    // Scans per second
-            qrbox: { width: 250, height: 250 },
-            rememberLastUsedCamera: false,  // Disable storing the last used camera
-            supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
-            formatsToSupport:  [Html5QrcodeSupportedFormats.QR_CODE]
-          },
-          onScanSuccess,
-          onScanFailure
-        ).catch(err => {
-          handleError(`Error starting QR code scanner: ${err}`);
-        });});
+        html5QrCode.stop().catch(err => alert(`Error stopping QR code scanner: ${err}`)).then(() => {
+          html5QrCode.start(
+            { facingMode: "environment" }, // Use rear camera
+            {
+              fps: 10,    // Scans per second
+              qrbox: { width: 250, height: 250 },
+              rememberLastUsedCamera: false,  // Disable storing the last used camera
+              supportedScanTypes: [Html5QrcodeScanType.SCAN_TYPE_CAMERA],
+              formatsToSupport:  [Html5QrcodeSupportedFormats.QR_CODE]
+            },
+            onScanSuccess,
+            onScanFailure
+          ).catch(err => {
+            handleError(`Error starting QR code scanner: ${err}`);
+          });
+        });
       });
 
       document.getElementById('closeModal').addEventListener('click', function() {
@@ -313,4 +322,6 @@ block content
         document.querySelector('.content').classList.remove('modal-open');
         html5QrCode.stop().catch(err => logErrorToServer(`Error stopping QR code scanner: ${err}`));
       });
+
+      toggleScanButton(); // Initial check
     });

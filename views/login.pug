@@ -8,9 +8,21 @@ block content
       form(action="/login" method="post")
         div.form-group
           label(for="username") Username:
-          input(type="text" name="username" class="form-control" required)
-        div.form-group
-          label(for="password") Password:
-          input(type="password" name="password" class="form-control" required)
+          select(name="username" class="form-control" required)            
+            option(value="Mike") Mike
+            option(value="Matt") Matt            
+            option(value="Wesley") Wesley            
+            option(value="Darryn") Darryn
+            option(value="Ryan") Ryan                        
+            option(value="Nicholas") Nicholas
+            option(value="Dillon") Dillon
+            option(value="Ivan") Ivan
+            option(value="Michelle") Michelle
+            option(value="Ralf") Ralf
+            option(value="Matthias") Matthias
+            option(value="Jenna") Jenna            
+            option(value="Taryn") Taryn
+            option(value="Nikki") Nikki
+            option(value="Dave") Dave
         div.form-group
           button(type="submit" class="btn btn-primary") Login

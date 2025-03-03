@@ -17,22 +17,23 @@
     "LabelNameEidos": "LabelEidos",
     "LabelNameCL": "LabelCL",
     "LabelNameDS": "LabelDS" , 
-    "LabelNameColorJet": "LabelColorJet"
+    "LabelNameColorJet": "LabelColorJet",
+    "LabelNameDOD": "LabelColorDOD"
   },
   "printerNames": {
     "PrinterNameHR": "REA JET HR 2K",
-    "PrinterNameGK": "-",
+    "PrinterNameGK": "REA JET GK 2.0",
     "PrinterNameUP": "REA JET UP",
     "PrinterNameSC": "REA JET SC 2.0",
-    "PrinterNameEidos": "-",
+    "PrinterNameEidos": "Eidos",
     "PrinterNameCL": "REA JET CL",
-    "PrinterNameDS": "-",
-    "PrinterNameColorJet": "REA LABEL ColorJet 2"
+    "PrinterNameDS": "REA JET DS",
+    "PrinterNameColorJet": "REA LABEL ColorJet 2",
+    "PrinterNameDOD": "REA JET DOD 2.0"
     },    
     "automationConfig": {
       "serverAddress": "127.0.0.1",
-      "serverPort": "56425",
-      "resetDelaySeconds":"30"
+      "serverPort": "56425"     
     },
   "sampleLeadIds": [ "1b339e21-2b45-4b68-af73-10dddbf7e465", "145a6658-0ef3-457a-bf97-78de6081990a" ],
   "oneleadApi": {
@@ -41,5 +42,8 @@
     "authPath": "/auth/sentinel",
     "username": "davereaapi",
     "password": "PzbyRWPydA!^4SZxsDJJ"    
+    },
+    "generalConfig": {  
+      "serverLabelResetDelay":"30"
     }
   }
