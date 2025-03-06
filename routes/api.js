@@ -4,9 +4,8 @@ const { getContactData } = require('../controllers/contactController'); // Impor
 const { saveScanInfo } = require('../controllers/scanController'); // Import the controller function
 const {saveLeadInfo } = require('../controllers/leadController'); // Import the controller function
 const { postToAutomationServer } = require('../controllers/integrationController'); // Import the controller function
-
-
 var logger = require('../logger'); // Import the custom logger
+
 const { poolPromise, sql } = require('../db');
 
 /* POST scanned result */
@@ -68,9 +67,17 @@ router.get('/get-contact-info', async function(req, res, next) {
   const barcode = req.query.barcode;
 
   try {
-    const contactInfo = await getContactData(barcode);
+    const response = await getContactData(barcode);
+    res.json(response);
+
+
+    // if (response.success){
+    //   res.json({ success: true, data: response.data });
+    // }
+    // else{
+    //   res.json({ success: false, data: response.data });
+    // }
     
-    res.json({ success: true, contactInfo });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -134,16 +141,28 @@ router.post('/print', async function(req, res, next) {
 
     //If the print option is BOD, execute the automation trigger twice
     //once for UP and once for GK
-    if(printInfo.isPrintBOD){      
+    var finalResult = { success: false, message: 'Failed to print' };
+
+    if(printInfo.isPrintBOD && printInfo.isPrintBOD === 'true'){      
       printInfo.isPrintUP = 'false';
       printInfo.isPrintGK = 'true';
+
       const result1 = await postToAutomationServer(printInfo);
       console.log('API print:', result1);    
+      
+      if(!result1.success){
+        res.status(500).json({ success: false, message: 'Failed to print BOD: GK failed' });
+      }
 
       printInfo.isPrintUP = 'true';
       printInfo.isPrintGK = 'false';
+      
       const result2 = await postToAutomationServer(printInfo);
-      console.log('API print:', result2);    
+      console.log('API print:', result2);   
+
+      if (!result2.success) {
+        res.status(500).json({ success: false, message: 'Failed to print BOD: UP failed' });
+      } 
 
       if (!result1.success && !result2.success) {
         res.status(500).json({ success: false, message: 'Failed to print BOD: Both UP and GK failed' });
@@ -152,15 +171,14 @@ router.post('/print', async function(req, res, next) {
       } else if (!result2.success) {
         res.status(500).json({ success: false, message: 'Failed to print BOD: GK failed' });
       } else {
-        res.json(result2);
-      }
-
+        res.json(result1);
+      }            
     } else {
       const result = await postToAutomationServer(printInfo);
       console.log('API print:', result);    
       res.json(result);
     }
-
+    
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

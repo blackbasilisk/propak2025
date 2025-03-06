@@ -14,6 +14,18 @@ block content
   script.
     window.printInfo = !{JSON.stringify(printInfo)}
 
+     function logInfoToServer(message) {
+      fetch('/api/log-info', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message }),
+      }).catch(err => {
+        console.error('Error logging INFO to server:', err);
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       console.log('Page loaded, showing loading container');
       // Show the loading container
@@ -35,9 +47,10 @@ block content
       })
       .then(data => {
         console.log('API call completed, hiding loading container');
+        logInfoToServer("Response from print request: " + data);
         // Hide the loading container
         document.getElementById('loadingContainer').style.display = 'none';
-
+          
         // Display the result
         const resultContainer = document.getElementById('resultContainer');
         const resultMessage = document.getElementById('resultMessage');

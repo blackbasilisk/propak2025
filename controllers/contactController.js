@@ -1,20 +1,21 @@
 const { poolPromise, sql } = require('../db');
 const config = require('config');
 var logger = require('../logger'); // Import the custom logger
+const { lookup } = require('./oneLeadController');
 
 async function getContactData(barcode) {
   if (!barcode) {
     throw new Error('Scan is required');
   }
 
-  try {  
+  try {
     console.log("barcode: " + barcode);
 
     // Fetch the person data from the database
     const pool = await poolPromise;
     const result = await pool.request()
-      .query('SELECT Barcode, FirstName, LastName, Email, Company, Phone FROM Person');
-    
+      .query('SELECT Barcode, FirstName, LastName, ClientName, Email, JobTitle, Company, Province, Country, Phone FROM Person');
+
     // Log the retrieved records for debugging
     console.log("Retrieved records: ", result.recordset);
 
@@ -23,10 +24,14 @@ async function getContactData(barcode) {
       const sampleLead = result.recordset.find(lead => lead.Barcode.trim().toLowerCase() === barcode.trim().toLowerCase());
       if (sampleLead) {
         console.log("Found lead using sample code: " + JSON.stringify(sampleLead));
-        return { ...sampleLead };
+
+        return { success: true, data:  {...sampleLead} };
       } else {
-        console.log("Lead not found in sample data, calling OneLead API...");
-        // Call OneLead API here
+        var lead = await lookup(barcode);
+        if(lead){
+          return  { success: true, data: lead };
+        }        
+        else return { success: false, message: 'No contact data found' };
       }
     } else {
       console.log("No records found in the database.");

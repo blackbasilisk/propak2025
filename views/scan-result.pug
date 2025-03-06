@@ -6,9 +6,15 @@ block content
   p 
   if leadInfo
     table.contact-info-table
+      //- tr
+      //-   th First Name
+      //-   td= leadInfo.firstName ? leadInfo.firstName : 'N/A'          
+      //- tr
+      //-   th Last Name
+      //-   td= leadInfo.lastName ? leadInfo.lastName : 'N/A'
       tr
-        th First Name
-        td= leadInfo.firstName ? leadInfo.firstName : 'N/A'          
+        th Client Name
+        td= leadInfo.clientName ? leadInfo.clientName : 'N/A'          
       tr
         th Last Name
         td= leadInfo.lastName ? leadInfo.lastName : 'N/A'
@@ -21,8 +27,14 @@ block content
       tr
         th Phone
         td= leadInfo.phone ? leadInfo.phone : 'N/A'
-      
-      - var isPrintRequired = leadInfo.isPrintHR === 'true' || leadInfo.isPrintBOD === 'true' || leadInfo.isPrintSC === 'true' || leadInfo.isPrintEidos === 'true' || leadInfo.isPrintCL === 'true' || leadInfo.isPrintDS === 'true' || leadInfo.isPrintColorJet === 'true' || leadInfo.isPrintOther === 'true';
+      tr
+        th Province
+        td= leadInfo.province ? leadInfo.province : 'N/A'
+      tr
+        th Country
+        td= leadInfo.country ? leadInfo.country : 'N/A'
+
+      - var isPrintRequired = leadInfo.isPrintHR === 'true' || leadInfo.isPrintBOD === 'true' || leadInfo.isPrintSC === 'true' || leadInfo.isPrintEidos === 'true' || leadInfo.isPrintCL === 'true' || leadInfo.isPrintDS === 'true' || leadInfo.isPrintColorJet === 'true' || leadInfo.isPrintDOD === 'true';
 
       if isPrintRequired
         table.print-tech-table
@@ -58,7 +70,7 @@ block content
               button Back to Home     
           td 
             // Print button with parameters
-            a(href=`/print?firstName=${leadInfo.firstName !== 'N/A' ? leadInfo.firstName : ''}&lastName=${leadInfo.lastName !== 'N/A' ? leadInfo.lastName : ''}&company=${leadInfo.company !== 'N/A' ? leadInfo.company : ''}&email=${leadInfo.email !== 'N/A' ? leadInfo.email : ''}&phone=${leadInfo.phone !== 'N/A' ? leadInfo.phone : ''}&isPrintHR=${leadInfo.isPrintHR}&isPrintBOD=${leadInfo.isPrintBOD}&isPrintSC=${leadInfo.isPrintSC}&isPrintEidos=${leadInfo.isPrintEidos}&isPrintCL=${leadInfo.isPrintCL}&isPrintDS=${leadInfo.isPrintDS}&isPrintColorJet=${leadInfo.isPrintColorJet}&isPrintDOD=${leadInfo.isPrintDOD ? leadInfo.isPrintDOD : false}`)
+            a(href=`/print?firstName=${leadInfo.firstName !== 'N/A' ? leadInfo.firstName : ''}&lastName=${leadInfo.lastName !== 'N/A' ? leadInfo.lastName : ''}&clientName=${leadInfo.clientName !== 'N/A' ? leadInfo.clientName : ''}&company=${leadInfo.company !== 'N/A' ? leadInfo.company : ''}&province=${leadInfo.province !== 'N/A' ? leadInfo.province : ''}&country=${leadInfo.country !== 'N/A' ? leadInfo.country : ''}&jobTitle=${leadInfo.jobTitle !== 'N/A' ? leadInfo.jobTitle : ''}&email=${leadInfo.email !== 'N/A' ? leadInfo.email : ''}&phone=${leadInfo.phone !== 'N/A' ? leadInfo.phone : ''}&isPrintHR=${leadInfo.isPrintHR}&isPrintBOD=${leadInfo.isPrintBOD}&isPrintSC=${leadInfo.isPrintSC}&isPrintEidos=${leadInfo.isPrintEidos}&isPrintCL=${leadInfo.isPrintCL}&isPrintDS=${leadInfo.isPrintDS}&isPrintColorJet=${leadInfo.isPrintColorJet}&isPrintDOD=${leadInfo.isPrintDOD ? leadInfo.isPrintDOD : false}`)
               button Print            
           
   
