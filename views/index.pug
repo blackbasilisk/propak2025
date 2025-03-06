@@ -70,7 +70,7 @@ block content
       height: 50px;
     }
 
-  script(src='https://unpkg.com/html5-qrcode')
+  script(src='/scripts/html5-qrcode.min.js')
   script.
     window.user = !{JSON.stringify(user)};
 
@@ -114,7 +114,7 @@ block content
         return result;
 
       } catch (error) {
-        handleError(`Error retrieving contact information: ${error.message}`);
+        handleError(`Error retrieving visitor information: ${error.message}`);
         return null;
       }
     }
@@ -198,13 +198,14 @@ block content
           logInfoToServer('index.pug.onScanSuccess: Save Scan API response:' + JSON.stringify(saveScanInfoResult))
           if (saveScanInfoResult.success) {
             logInfoToServer('Code and selection values saved successfully. Code: ' + barcode);
+          
 
             // Retrieve contact info from the server or 3rd party service
             var contactInfoResponse = await getContactData(barcode);
-            logInfoToServer('Contact info retrieved: ' + JSON.stringify(contactInfoResponse.data.data));
+            logInfoToServer('Contact info retrieved: ' + JSON.stringify(contactInfoResponse.data));
             if (contactInfoResponse && contactInfoResponse.success) {                       
                   
-              contactInfo = contactInfoResponse.data.data;
+              contactInfo = contactInfoResponse.data;
 
               const leadInfo = { 
                 firstName: contactInfo.FirstName, 
@@ -252,7 +253,7 @@ block content
                 handleError('Error saving lead information. ' + saveLeadResult.message);
               }
             } else {
-              handleError('Error retrieving contact information. ' + saveLeadResult.message);
+              handleError('Error retrieving contact information. ' + contactInfoResponse.message);
             }
           } else {
             if(contactInfoResponse){

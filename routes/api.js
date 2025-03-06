@@ -70,7 +70,6 @@ router.get('/get-contact-info', async function(req, res, next) {
     const response = await getContactData(barcode);
     res.json(response);
 
-
     // if (response.success){
     //   res.json({ success: true, data: response.data });
     // }

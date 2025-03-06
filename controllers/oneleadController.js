@@ -105,15 +105,15 @@ async function lookup(leadId){
             return response;
           }
           else{
-            return { success: false, message: "Error retrieving OneLead. Could not parse OneLead data." };
+            return { success: false, message: "Error retrieving OneLead. Could not parse OneLead data. Use DEMO QR Code instead." };
           }
 
         } else {
-          return { success: false, message: "Error getting lookup response from OneLead API" };
+          return { success: false, message: "Error getting lookup response from OneLead API. Use DEMO QR Code instead." };
         }
       }
       else {
-        return { success: false, message: "Error getting authorization from OneLead API" };
+        return { success: false, message: "Error getting authorization from OneLead API. Use DEMO QR Code instead." };
       }
     }
     catch (err) {

@@ -27,11 +27,11 @@ async function getContactData(barcode) {
 
         return { success: true, data:  {...sampleLead} };
       } else {
-        var lead = await lookup(barcode);
-        if(lead){
-          return  { success: true, data: lead };
+        var leadResponse = await lookup(barcode);
+        if(leadResponse && leadResponse.success){
+          return  { success: true, data: leadResponse.data };
         }        
-        else return { success: false, message: 'No contact data found' };
+        else return { success: false, message: 'Could not retrieve visitor information. Use SAMPLE code.' };
       }
     } else {
       console.log("No records found in the database.");
