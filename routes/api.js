@@ -129,10 +129,7 @@ router.post('/save-lead-info', async function(req, res, next) {
 router.post('/print', async function(req, res, next) {
   
   const printInfo = req.body;
-  
-  // Add a key-value pair to the printInfo object
-  printInfo.newKey = 'newValue';
-
+    
   console.log('API: API print:', printInfo);
 
   try {
