@@ -1,19 +1,21 @@
 var express = require('express');
 var router = express.Router();
-const logger = require('../logger');
+var logger = require('../logger');
 const config = require('config');
 const fs = require('fs');
 const path = require('path');
 
-const { getAutomationParametersFromConfig, postToAutomationServer } = require('../controllers/integrationController'); 
-
 /* GET scan result page. */
 router.get('/', async function(req, res, next) {            
-    const firstName = req.query.firstName;
-    const lastName = req.query.lastName;
-    const email = req.query.email;
+    const firstName = req.query.firstName === "";
+    const lastName = req.query.lastName === "";
+    const clientName = req.query.clientName;    
+    const email = req.query.email === "";
     const company = req.query.company;
-    const phone = req.query.phone;
+    const phone = req.query.phone === "";
+    const province = req.query.province === "";    
+    const country = req.query.country === "";
+    const jobTitle = req.query.jobTitle === "";
     const isPrintHR = req.query.isPrintHR === 'false';
     const isPrintBOD = req.query.isPrintBOD === 'false';
     const isPrintSC = req.query.isPrintSC === 'false';
@@ -21,15 +23,16 @@ router.get('/', async function(req, res, next) {
     const isPrintDS = req.query.isPrintDS === 'false';
     const isPrintCL = req.query.isPrintLaser === 'false';
     const isPrintColorJet = req.query.isPrintColorJet === 'false';
+    const isPrintDOD = req.query.isPrintDOD === 'false';
                 
-    //const isPrintRequired = isPrintHR || isPrintBOD || isPrintSC || isPrintEidos || isPrintDS || isPrintCL || isPrintColorJet;
+    //const isPrintRequired = isPrintHR || isPrintBOD || isPrintSC || isPrintEidos || isPrintDS || isPrintCL || isPrintColorJet || isPrintDOD;
 
-  if (!firstName || !lastName || !phone) {
+  if (!firstName || !company) {
     //return res.status(400).send('First name, last name and phone are required.');
-    const message = 'First name, last name, and phone are required.';
+    const message = 'First name and company are required.';
     res.render('error', { title: 'Error', message });
   }
-  const leadInfo = { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
+  const leadInfo = { firstName, lastName, clientName, email, company, phone, province, country, jobTitle, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet, isPrintDOD };
 
   logger.info(JSON.stringify(leadInfo, null, 2));
   res.render('scan-result', { title: 'Result', leadInfo });
@@ -64,17 +67,17 @@ router.get('/', async function(req, res, next) {
 
 /* POST scan result page. */
 router.post('/', function(req, res, next) {
-  const { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet } = req.body;
+  const { firstName, lastName, clientName, email, company, province, country, jobTitle, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet } = req.body;
   
-  if (!firstName || !lastName || !phone) {
-    const message = 'First name, last name, and phone are required.';
+  if (!firstName || !company) {
+    const message = 'First name and company are required.';
     res.render('error', { title: 'Error', message });
-    //return res.status(400).send('First name, last name, and phone are required.');
-  }
+    
+  } else{
+    const leadInfo = { firstName, lastName, clientName, email, company, province, country, jobTitle, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
 
-  const leadInfo = { firstName, lastName, email, company, phone, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintDS, isPrintCL, isPrintColorJet };
-
-  logger.info(JSON.stringify(leadInfo, null, 2));
-  res.render('scan-result', { title: 'Result', leadInfo });
+    logger.info("POST /scan-result leadInfo: " + JSON.stringify(leadInfo, null, 2));
+    res.render('scan-result', { title: 'Result', leadInfo });
+  }  
 });
 module.exports = router;

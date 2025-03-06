@@ -110,6 +110,7 @@ async function postToAutomationServer(leadInfo) {
   } catch (err) {    
     logger.error('Error posting to automation server:', err);
     return {      
+      status: 500,
       success: false,
       message: err.message
     };    

@@ -143,6 +143,7 @@ block content
     
     async function saveLeadInfo(leadInfo) {
       try {        
+         logInfoToServer('Saving the Lead info:' + JSON.stringify(leadInfo));
           const response = await fetch('/api/save-lead-info', {
           method: 'POST',
           headers: {
@@ -199,11 +200,25 @@ block content
             logInfoToServer('Code and selection values saved successfully. Code: ' + barcode);
 
             // Retrieve contact info from the server or 3rd party service
-            var contactInfo = await getContactData(barcode);
+            var contactInfoResponse = await getContactData(barcode);
+            logInfoToServer('Contact info retrieved: ' + JSON.stringify(contactInfoResponse.data.data));
+            if (contactInfoResponse && contactInfoResponse.success) {                       
+                  
+              contactInfo = contactInfoResponse.data.data;
 
-            if (contactInfo) {                                         
-              contactInfo = contactInfo.contactInfo;
-              const leadInfo = { firstName: contactInfo.FirstName, lastName: contactInfo.LastName, email: contactInfo.Email, company: contactInfo.Company, phone: contactInfo.Phone, barcode: barcode, userId: window.user.Id, isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintDOD, isPrintColorJet };
+              const leadInfo = { 
+                firstName: contactInfo.FirstName, 
+                lastName: contactInfo.LastName, 
+                clientName: contactInfo.ClientName,  
+                email: contactInfo.Email, 
+                company: contactInfo.Company, 
+                province: contactInfo.Province, 
+                country: contactInfo.Country, 
+                jobTitle: contactInfo.JobTitle, 
+                phone: contactInfo.Phone, 
+                barcode: barcode, 
+                userId: window.user.Id, 
+                isPrintHR, isPrintBOD, isPrintSC, isPrintEidos, isPrintCL, isPrintDS, isPrintDOD, isPrintColorJet, isPrintDOD };
                logInfoToServer('Saving lead info to the server: ' + JSON.stringify(leadInfo));
               // Save lead info to the server incl. technology interest  
               const saveLeadResult = await saveLeadInfo(leadInfo);   
@@ -240,7 +255,11 @@ block content
               handleError('Error retrieving contact information. ' + saveLeadResult.message);
             }
           } else {
-            handleError(`1: Error saving scan info: ${saveScanInfoResult.message}`);
+            if(contactInfoResponse){
+              handleError(`Error saving scan info: ${saveScanInfoResult.message} and ${contactInfoResponse.message}`);
+            }else{
+              handleError(`Error saving scan info: ${saveScanInfoResult.message}`);
+            }
           }
         } catch (error) {
           handleError(`2: Error saving scan info: ${error.message}`);
