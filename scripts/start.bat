@@ -1,0 +1,1 @@
+cmd /k "cd C:\source\propak2025 && npm start"
